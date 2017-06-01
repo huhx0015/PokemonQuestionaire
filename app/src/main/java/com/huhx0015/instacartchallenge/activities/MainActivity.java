@@ -17,7 +17,6 @@ import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
 import com.huhx0015.instacartchallenge.models.QuestionsResponse;
 import com.huhx0015.instacartchallenge.utils.JsonUtils;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -25,29 +24,48 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
+    private static final String INSTANCE_QUESTIONS = LOG_TAG + "_QUESTIONS";
+
     private String mFragmentTag;
-    private String mJsonString;
+    private QuestionsResponse mQuestionsResponse;
 
     @BindView(R.id.main_fragment_container) RelativeLayout mFragmentContainer;
     @BindView(R.id.main_progress_bar) ProgressBar mProgressBar;
+    @BindView(R.id.main_toolbar) Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         initView();
 
-        loadJson();
+        if (savedInstanceState != null) {
+            mQuestionsResponse = savedInstanceState.getParcelable(INSTANCE_QUESTIONS);
+            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
 
-        // TODO: Load first fragment now, change later.
-        loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
+            if (mQuestionsResponse != null) {
+                loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
+                return;
+            }
+        }
+
+        loadJson();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if (mQuestionsResponse != null) {
+            outState.putParcelable(INSTANCE_QUESTIONS, mQuestionsResponse);
+        }
+        outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
     }
 
     private void initView() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
     }
 
     private void loadJson() {
@@ -57,13 +75,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFragment(Fragment fragment, String tag) {
         this.mFragmentTag = tag;
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(mFragmentContainer.getId(), fragment);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public class JsonAsyncTask extends AsyncTask<String, Void, QuestionsResponse> {
+    private class JsonAsyncTask extends AsyncTask<String, Void, QuestionsResponse> {
 
         @Override
         protected void onPreExecute() {
@@ -86,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "An error occurred while attempting to read the JSON file.",
                         Toast.LENGTH_LONG).show();
             } else {
+                mQuestionsResponse = response;
+                loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
                 Log.d(LOG_TAG, "Size: " + response.getQuestionList().size());
             }
         }
