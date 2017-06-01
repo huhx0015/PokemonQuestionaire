@@ -1,8 +1,14 @@
 package com.huhx0015.instacartchallenge.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
@@ -29,6 +35,8 @@ public class QuestionFraqment extends Fragment {
     private static final String LOG_TAG = QuestionFraqment.class.getSimpleName();
     private static final String INSTANCE_QUESTION = LOG_TAG + "_INSTANCE_QUESTION";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
+    private static final String INSTANCE_SELECTED_POSITION = LOG_TAG + "_INSTANCE_SELECTED_POSITION";
+    private static final String INSTANCE_TIME_UP = LOG_TAG + "_INSTANCE_TIME_UP";
 
     private static final int CORRECT_ANSWER_IMAGE_POSITION = 0;
     private static final int POSITION_1 = 0;
@@ -36,7 +44,9 @@ public class QuestionFraqment extends Fragment {
     private static final int POSITION_3 = 2;
     private static final int POSITION_4 = 3;
 
+    private boolean mIsTimeUp = false;
     private int mCorrectPosition;
+    private int mSelectedPosition;
     private MainActivityListener mListener;
     private Question mQuestion;
     private Unbinder mUnbinder;
@@ -47,6 +57,8 @@ public class QuestionFraqment extends Fragment {
     @BindView(R.id.fragment_question_image_4) AppCompatImageView mQuestionImage4;
     @BindView(R.id.fragment_question_text) AppCompatTextView mQuestionText;
     @BindView(R.id.fragment_question_instruction_text) AppCompatTextView mInstructionText;
+    @BindView(R.id.fragment_question_time_remaining) AppCompatTextView mTimeRemainingText;
+    @BindView(R.id.fragment_question_submit_button) AppCompatButton mSubmitButton;
 
     public static QuestionFraqment newInstance(Question question, int correctPosition, MainActivityListener listener) {
         QuestionFraqment fraqment = new QuestionFraqment();
@@ -64,6 +76,8 @@ public class QuestionFraqment extends Fragment {
         if (savedInstanceState != null) {
             mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, GroceryConstants.STATE_CORRECT_POSITION_UNSET);
+            mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, GroceryConstants.STATE_CORRECT_POSITION_UNSET);
+            mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
         }
 
         if (mCorrectPosition == GroceryConstants.STATE_CORRECT_POSITION_UNSET) {
@@ -83,6 +97,19 @@ public class QuestionFraqment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerReceiever,
+                new IntentFilter(GroceryConstants.BROADCAST_TIMER));
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mTimerReceiever);
+        super.onPause();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         Glide.clear(mQuestionImage1);
@@ -97,6 +124,8 @@ public class QuestionFraqment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putParcelable(INSTANCE_QUESTION, mQuestion);
         outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
+        outState.putInt(INSTANCE_SELECTED_POSITION, mSelectedPosition);
+        outState.putBoolean(INSTANCE_TIME_UP, mIsTimeUp);
     }
 
     private void initView() {
@@ -107,6 +136,10 @@ public class QuestionFraqment extends Fragment {
     private void initText() {
         mQuestionText.setText(mQuestion.getItem());
         mInstructionText.setText(String.format(getString(R.string.questions_instructions), mQuestion.getItem()));
+
+        if (mIsTimeUp) {
+            mTimeRemainingText.setText(getString(R.string.questions_time_run_out));
+        }
     }
 
     private void initImages() {
@@ -156,6 +189,12 @@ public class QuestionFraqment extends Fragment {
         this.mCorrectPosition = QuestionUtils.getRandomPosition();
     }
 
+    private void setSubmitButtonVisible() {
+        if (mSubmitButton.getVisibility() == View.GONE) {
+            mSubmitButton.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void checkAnswer(int position) {
         if (position == mCorrectPosition) {
             mListener.onAnswerSelected(true);
@@ -166,21 +205,57 @@ public class QuestionFraqment extends Fragment {
 
     @OnClick(R.id.fragment_question_image_1)
     public void onQuestionImage1Clicked() {
-        checkAnswer(POSITION_1);
+        mSelectedPosition = POSITION_1;
+        setSubmitButtonVisible();
     }
 
     @OnClick(R.id.fragment_question_image_2)
     public void onQuestionImage2Clicked() {
-        checkAnswer(POSITION_2);
+        mSelectedPosition = POSITION_2;
+        setSubmitButtonVisible();
     }
 
     @OnClick(R.id.fragment_question_image_3)
     public void onQuestionImage3Clicked() {
-        checkAnswer(POSITION_3);
+        mSelectedPosition = POSITION_3;
+        setSubmitButtonVisible();
     }
 
     @OnClick(R.id.fragment_question_image_4)
     public void onQuestionImage4Clicked() {
-        checkAnswer(POSITION_4);
+        mSelectedPosition = POSITION_4;
+        setSubmitButtonVisible();
     }
+
+    @OnClick(R.id.fragment_question_submit_button)
+    public void onSubmitClicked() {
+        if (!mIsTimeUp) {
+            checkAnswer(mSelectedPosition);
+        } else {
+            mListener.onTryAgainSelected(true);
+        }
+    }
+
+    private BroadcastReceiver mTimerReceiever = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(LOG_TAG, "mTimerReceiver: Received update from TimerService.");
+
+            long timeRemaining = intent.getLongExtra(GroceryConstants.EVENT_TIMER_REMAINING, 0);
+            if (timeRemaining != 0) {
+                mTimeRemainingText.setText(String.format(getString(R.string.questions_seconds), timeRemaining));
+            }
+
+            boolean isFinished = intent.getBooleanExtra(GroceryConstants.EVENT_TIMER_FINISHED, false);
+            if (isFinished) {
+                mIsTimeUp = true;
+                mTimeRemainingText.setText(getString(R.string.questions_time_run_out));
+
+                if (mSubmitButton.getVisibility() == View.GONE) {
+                    mSubmitButton.setVisibility(View.VISIBLE);
+                }
+                mSubmitButton.setText(getString(R.string.result_try_again));
+            }
+        }
+    };
 }

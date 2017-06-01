@@ -4,6 +4,10 @@
 
     <string name="questions_title">Grocery Quiz Question</string>
     <string name="questions_instructions">Tap on the grocery item image that corresponds with %1$s.</string>
+    <string name="questions_time_remaining">Time Remaining:</string>
+    <string name="questions_seconds">%1$d Seconds Left</string>
+    <string name="questions_time_run_out">Time\'s Up!</string>
+    <string name="question_submit">Submit</string>
 
     <string name="result_title">Your Answer Is:</string>
     <string name="result_correct">CORRECT!</string>

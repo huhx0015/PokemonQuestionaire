@@ -1,5 +1,6 @@
 package com.huhx0015.instacartchallenge.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.huhx0015.instacartchallenge.services.TimerService;
 import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
 import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
@@ -65,6 +68,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     }
 
     @Override
+    public void onBackPressed() {
+        startTimer(false);
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
@@ -96,9 +105,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    private void startTimer(boolean isStart) {
+        if (isStart) {
+            startService(new Intent(this, TimerService.class));
+        } else {
+            stopService(new Intent(this, TimerService.class));
+        }
+    }
+
     @Override
     public void onAnswerSelected(boolean isCorrect) {
         loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
+        startTimer(false);
     }
 
     @Override
@@ -110,6 +128,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
         loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
                 QuestionFraqment.class.getSimpleName());
+        if ()
+        startTimer(true);
     }
 
     private class JsonAsyncTask extends AsyncTask<String, Void, Question> {
@@ -147,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
                 mCorrectPosition = QuestionUtils.getRandomPosition();
                 loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition,
                         MainActivity.this), QuestionFraqment.class.getSimpleName());
+                startTimer(true);
             }
         }
     }
