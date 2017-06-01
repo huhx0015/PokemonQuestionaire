@@ -8,4 +8,5 @@ public class GroceryConstants {
 
     public static final String GROCERY_ASSET_NAME = "questions.json";
     public static final String TYPE_ENCODING_UTF8 = "UTF-8";
+    public static final int STATE_CORRECT_POSITION_UNSET = -1;
 }

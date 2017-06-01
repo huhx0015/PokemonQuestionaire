@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.huhx0015.instacartchallenge.R;
+import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
 import com.huhx0015.instacartchallenge.models.Question;
 import com.huhx0015.instacartchallenge.utils.QuestionUtils;
@@ -29,12 +30,13 @@ public class QuestionFraqment extends Fragment {
     private static final String INSTANCE_QUESTION = LOG_TAG + "_INSTANCE_QUESTION";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
 
-    private static final int POSITION_1 = 1;
-    private static final int POSITION_2 = 2;
-    private static final int POSITION_3 = 3;
-    private static final int POSITION_4 = 4;
+    private static final int CORRECT_ANSWER_IMAGE_POSITION = 0;
+    private static final int POSITION_1 = 0;
+    private static final int POSITION_2 = 1;
+    private static final int POSITION_3 = 2;
+    private static final int POSITION_4 = 3;
 
-    private int mCorrectPosition = -1;
+    private int mCorrectPosition;
     private MainActivityListener mListener;
     private Question mQuestion;
     private Unbinder mUnbinder;
@@ -46,9 +48,10 @@ public class QuestionFraqment extends Fragment {
     @BindView(R.id.fragment_question_text) AppCompatTextView mQuestionText;
     @BindView(R.id.fragment_question_instruction_text) AppCompatTextView mInstructionText;
 
-    public static QuestionFraqment newInstance(Question question, MainActivityListener listener) {
+    public static QuestionFraqment newInstance(Question question, int correctPosition, MainActivityListener listener) {
         QuestionFraqment fraqment = new QuestionFraqment();
         fraqment.mQuestion = question;
+        fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
         return fraqment;
     }
@@ -60,12 +63,14 @@ public class QuestionFraqment extends Fragment {
 
         if (savedInstanceState != null) {
             mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
-            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, GroceryConstants.STATE_CORRECT_POSITION_UNSET);
         }
 
-        if (mCorrectPosition == -1) {
+        if (mCorrectPosition == GroceryConstants.STATE_CORRECT_POSITION_UNSET) {
             setCorrectAnswerPosition();
         }
+
+        Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mCorrectPosition);
     }
 
     @Nullable
@@ -73,9 +78,7 @@ public class QuestionFraqment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_question, container, false);
         mUnbinder = ButterKnife.bind(this, view);
-
         initView();
-
         return view;
     }
 
@@ -108,20 +111,24 @@ public class QuestionFraqment extends Fragment {
 
     private void initImages() {
 
-        // Loads the correct image.
-        selectImage(mQuestion.getUrlList().get(mCorrectPosition), mCorrectPosition);
+        // Sets the correct answer image.
+        setImage(mQuestion.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION), mCorrectPosition);
 
-        // Loads the rest of the images.
-        int imageCount = 0;
-        for (String imageUrl : mQuestion.getUrlList()) {
-            if (imageCount != mCorrectPosition) {
-                selectImage(imageUrl, imageCount);
+        // Sets the rest of the images.
+        int imageCount = 1;
+        int position = 0;
+        int numberOfImages = mQuestion.getUrlList().size();
+        while (imageCount < numberOfImages) {
+            String url = mQuestion.getUrlList().get(imageCount);
+            if (position != mCorrectPosition) {
+                setImage(url, position);
+                imageCount++;
             }
-            imageCount++;
+            position++;
         }
     }
 
-    private void selectImage(String imageUrl, int position) {
+    private void setImage(String imageUrl, int position) {
         switch (position) {
             case 0:
                 loadImage(imageUrl, mQuestionImage1);
@@ -136,6 +143,7 @@ public class QuestionFraqment extends Fragment {
                 loadImage(imageUrl, mQuestionImage4);
                 break;
         }
+        Log.d(LOG_TAG, "setImage(): Image set at position: " + position);
     }
 
     private void loadImage(String imageUrl, AppCompatImageView imageView) {
@@ -146,16 +154,13 @@ public class QuestionFraqment extends Fragment {
 
     private void setCorrectAnswerPosition() {
         this.mCorrectPosition = QuestionUtils.getRandomPosition();
-        Log.d(LOG_TAG, "setCorrectAnswerPosition(): Correct image position set at: " + mCorrectPosition);
     }
 
     private void checkAnswer(int position) {
         if (position == mCorrectPosition) {
             mListener.onAnswerSelected(true);
-            // TODO: Go to next fragment.
         } else {
             mListener.onAnswerSelected(false);
-            // TODO: Show incorrect.
         }
     }
 

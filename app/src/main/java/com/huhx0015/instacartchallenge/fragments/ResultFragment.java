@@ -3,13 +3,12 @@ package com.huhx0015.instacartchallenge.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.huhx0015.instacartchallenge.R;
-
+import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -22,13 +21,15 @@ import butterknife.Unbinder;
 public class ResultFragment extends Fragment {
 
     private boolean mIsCorrect;
+    private MainActivityListener mListener;
     private Unbinder mUnbinder;
 
     @BindView(R.id.fragment_result_text) AppCompatTextView mResultText;
 
-    public static ResultFragment newInstance(boolean isCorrect) {
+    public static ResultFragment newInstance(boolean isCorrect, MainActivityListener listener) {
         ResultFragment fragment = new ResultFragment();
         fragment.mIsCorrect = isCorrect;
+        fragment.mListener = listener;
         return fragment;
     }
 
@@ -55,6 +56,6 @@ public class ResultFragment extends Fragment {
 
     @OnClick(R.id.fragment_result_try_again_button)
     public void onTryAgainClicked() {
-
+        mListener.onTryAgainSelected(mIsCorrect);
     }
 }

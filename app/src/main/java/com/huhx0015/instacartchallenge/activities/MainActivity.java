@@ -30,7 +30,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
     private static final String INSTANCE_QUESTIONS = LOG_TAG + "_QUESTIONS";
     private static final String INSTANCE_SELECTED_QUESTION = LOG_TAG + "_SELECTED_QUESTION";
+    private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
+    private int mCorrectPosition = GroceryConstants.STATE_CORRECT_POSITION_UNSET;
     private String mFragmentTag;
     private Question mSelectedQuestion;
     private QuestionsResponse mQuestionsResponse;
@@ -50,9 +52,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
             mQuestionsResponse = savedInstanceState.getParcelable(INSTANCE_QUESTIONS);
             mSelectedQuestion = savedInstanceState.getParcelable(INSTANCE_SELECTED_QUESTION);
             mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
+            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
 
             if (mSelectedQuestion != null) {
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, this), QuestionFraqment.class.getSimpleName());
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
+                        QuestionFraqment.class.getSimpleName());
                 return;
             }
         }
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
             outState.putParcelable(INSTANCE_SELECTED_QUESTION, mSelectedQuestion);
         }
         outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
+        outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
     }
 
     private void initView() {
@@ -93,7 +98,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
     @Override
     public void onAnswerSelected(boolean isCorrect) {
-        loadFragment(ResultFragment.newInstance(isCorrect), ResultFragment.class.getSimpleName());
+        loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
+    }
+
+    @Override
+    public void onTryAgainSelected(boolean isNewQuestion) {
+        if (isNewQuestion) {
+            mSelectedQuestion = QuestionUtils.getRandomQuestion(mQuestionsResponse.getQuestionList());
+            mCorrectPosition = QuestionUtils.getRandomPosition();
+        }
+
+        loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
+                QuestionFraqment.class.getSimpleName());
     }
 
     private class JsonAsyncTask extends AsyncTask<String, Void, Question> {
@@ -128,7 +144,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
                         Toast.LENGTH_LONG).show();
             } else {
                 mSelectedQuestion = question;
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, MainActivity.this), QuestionFraqment.class.getSimpleName());
+                mCorrectPosition = QuestionUtils.getRandomPosition();
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition,
+                        MainActivity.this), QuestionFraqment.class.getSimpleName());
             }
         }
     }

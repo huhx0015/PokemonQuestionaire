@@ -6,4 +6,5 @@ package com.huhx0015.instacartchallenge.interfaces;
 
 public interface MainActivityListener {
     void onAnswerSelected(boolean isCorrect);
+    void onTryAgainSelected(boolean isNewQuestion);
 }
