@@ -6,17 +6,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
     private String mFragmentTag;
 
+    @BindView(R.id.main_fragment_container) FrameLayout mFragmentContainer;
+    @BindView(R.id.main_progress_bar) ProgressBar mProgressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         initView();
 
@@ -33,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         this.mFragmentTag = tag;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_fragment_container, fragment);
+        fragmentTransaction.replace(mFragmentContainer.getId(), fragment);
         fragmentTransaction.commitAllowingStateLoss();
     }
 }
