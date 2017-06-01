@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+
+        // TODO: Load first fragment now, change later.
+        loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
     }
 
     private void initView() {

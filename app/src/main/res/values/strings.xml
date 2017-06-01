@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Instacart Challenges</string>
+
+    <string name="app_name">Instacart Questionaire</string>
+
+    <string name="questions_title">Grocery Quiz Question</string>
+    <string name="questions_instructions">Tap on the grocery item image that corresponds with %1$s.</string>
+
 </resources>

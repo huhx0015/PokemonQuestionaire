@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/questions_title"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:text="FOOD"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:typeface="sans" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center"
+        android:text="@string/questions_instructions"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/fragment_padding">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/fragment_question_image_1"
+            android:layout_width="@dimen/grocery_item_dimen"
+            android:layout_height="@dimen/grocery_item_dimen"
+            android:layout_marginEnd="@dimen/grocery_item_side_margin"
+            android:layout_marginStart="@dimen/grocery_item_side_margin" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/fragment_question_image_2"
+            android:layout_width="@dimen/grocery_item_dimen"
+            android:layout_height="@dimen/grocery_item_dimen"
+            android:layout_marginEnd="@dimen/grocery_item_side_margin"
+            android:layout_marginStart="@dimen/grocery_item_side_margin" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/fragment_question_image_3"
+            android:layout_width="@dimen/grocery_item_dimen"
+            android:layout_height="@dimen/grocery_item_dimen"
+            android:layout_marginEnd="@dimen/grocery_item_side_margin"
+            android:layout_marginStart="@dimen/grocery_item_side_margin" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/fragment_question_image_4"
+            android:layout_width="@dimen/grocery_item_dimen"
+            android:layout_height="@dimen/grocery_item_dimen"
+            android:layout_marginEnd="@dimen/grocery_item_side_margin"
+            android:layout_marginStart="@dimen/grocery_item_side_margin" />
+
+    </LinearLayout>
 
 </LinearLayout>
