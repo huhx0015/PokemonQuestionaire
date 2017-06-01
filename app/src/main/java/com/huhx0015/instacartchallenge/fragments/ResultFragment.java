@@ -18,6 +18,11 @@ public class ResultFragment extends Fragment {
 
     private Unbinder mUnbinder;
 
+    public static ResultFragment newInstance() {
+        ResultFragment fraqment = new ResultFragment();
+        return fraqment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
