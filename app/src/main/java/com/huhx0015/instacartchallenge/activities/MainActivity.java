@@ -9,15 +9,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
 import com.huhx0015.instacartchallenge.utils.JsonUtils;
+
+import org.json.JSONException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -73,7 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            return JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
+            String response = JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
+            try {
+                JsonUtils.getGroceryQuestionsFromJson(response);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return response;
         }
 
         @Override
