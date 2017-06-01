@@ -8,6 +8,8 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
 import com.huhx0015.instacartchallenge.R;
 import com.huhx0015.instacartchallenge.models.Question;
 import butterknife.BindView;
@@ -42,6 +44,7 @@ public class QuestionFraqment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
@@ -62,6 +65,10 @@ public class QuestionFraqment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Glide.clear(mQuestionImage1);
+        Glide.clear(mQuestionImage2);
+        Glide.clear(mQuestionImage3);
+        Glide.clear(mQuestionImage4);
         mUnbinder.unbind();
     }
 
@@ -82,10 +89,29 @@ public class QuestionFraqment extends Fragment {
     }
 
     private void initImages() {
-
-
+        int imageCount = 0;
+        for (String imageUrl : mQuestion.getUrlList()) {
+            switch (imageCount) {
+                case 0:
+                    loadImage(imageUrl, mQuestionImage1);
+                    break;
+                case 1:
+                    loadImage(imageUrl, mQuestionImage2);
+                    break;
+                case 2:
+                    loadImage(imageUrl, mQuestionImage3);
+                    break;
+                case 3:
+                    loadImage(imageUrl, mQuestionImage4);
+                    break;
+            }
+            imageCount++;
+        }
     }
 
-
-
+    private void loadImage(String imageUrl, AppCompatImageView imageView) {
+        Glide.with(getContext())
+                .load(imageUrl)
+                .into(imageView);
+    }
 }
