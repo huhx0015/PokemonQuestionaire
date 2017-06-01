@@ -1,5 +1,5 @@
 
-package com.huhx0015.instacartchallenge;
+package com.huhx0015.instacartchallenge.models;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

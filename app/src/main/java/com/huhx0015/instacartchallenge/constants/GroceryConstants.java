@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge;
+package com.huhx0015.instacartchallenge.constants;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.

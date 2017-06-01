@@ -1,7 +1,10 @@
-package com.huhx0015.instacartchallenge;
+package com.huhx0015.instacartchallenge.utils;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.huhx0015.instacartchallenge.constants.GroceryConstants;
+
 import java.io.IOException;
 import java.io.InputStream;
 
