@@ -15,9 +15,8 @@ import android.widget.Toast;
 import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
+import com.huhx0015.instacartchallenge.models.QuestionsResponse;
 import com.huhx0015.instacartchallenge.utils.JsonUtils;
-
-import org.json.JSONException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    public class JsonAsyncTask extends AsyncTask<String, Void, String> {
+    public class JsonAsyncTask extends AsyncTask<String, Void, QuestionsResponse> {
 
         @Override
         protected void onPreExecute() {
@@ -73,26 +72,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String doInBackground(String... params) {
-            String response = JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
-            try {
-                JsonUtils.getGroceryQuestionsFromJson(response);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return response;
+        protected QuestionsResponse doInBackground(String... params) {
+            String responseJson = JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
+            return JsonUtils.getGroceryQuestionsFromJson(responseJson);
         }
 
         @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
+        protected void onPostExecute(QuestionsResponse response) {
+            super.onPostExecute(response);
             mProgressBar.setVisibility(View.GONE);
 
-            if (string == null) {
+            if (response == null) {
                 Toast.makeText(MainActivity.this, "An error occurred while attempting to read the JSON file.",
                         Toast.LENGTH_LONG).show();
             } else {
-                Log.d(LOG_TAG, string);
+                Log.d(LOG_TAG, "Size: " + response.getQuestionList().size());
             }
         }
     }
