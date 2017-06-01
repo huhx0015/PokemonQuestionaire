@@ -5,15 +5,17 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bumptech.glide.Glide;
 import com.huhx0015.instacartchallenge.R;
 import com.huhx0015.instacartchallenge.models.Question;
+import com.huhx0015.instacartchallenge.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -22,9 +24,16 @@ import butterknife.Unbinder;
 
 public class QuestionFraqment extends Fragment {
 
-    private static final String LOG_CAT = QuestionFraqment.class.getSimpleName();
-    private static final String INSTANCE_QUESTION = LOG_CAT + "_INSTANCE_QUESTION";
+    private static final String LOG_TAG = QuestionFraqment.class.getSimpleName();
+    private static final String INSTANCE_QUESTION = LOG_TAG + "_INSTANCE_QUESTION";
+    private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
 
+    private static final int POSITION_1 = 1;
+    private static final int POSITION_2 = 2;
+    private static final int POSITION_3 = 3;
+    private static final int POSITION_4 = 4;
+
+    private int mCorrectPosition = -1;
     private Question mQuestion;
     private Unbinder mUnbinder;
 
@@ -48,6 +57,11 @@ public class QuestionFraqment extends Fragment {
 
         if (savedInstanceState != null) {
             mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
+            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+        }
+
+        if (mCorrectPosition == -1) {
+            setCorrectAnswerPosition();
         }
     }
 
@@ -76,6 +90,7 @@ public class QuestionFraqment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(INSTANCE_QUESTION, mQuestion);
+        outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
     }
 
     private void initView() {
@@ -89,23 +104,34 @@ public class QuestionFraqment extends Fragment {
     }
 
     private void initImages() {
+
+        // Loads the correct image.
+        selectImage(mQuestion.getUrlList().get(mCorrectPosition), mCorrectPosition);
+
+        // Loads the rest of the images.
         int imageCount = 0;
         for (String imageUrl : mQuestion.getUrlList()) {
-            switch (imageCount) {
-                case 0:
-                    loadImage(imageUrl, mQuestionImage1);
-                    break;
-                case 1:
-                    loadImage(imageUrl, mQuestionImage2);
-                    break;
-                case 2:
-                    loadImage(imageUrl, mQuestionImage3);
-                    break;
-                case 3:
-                    loadImage(imageUrl, mQuestionImage4);
-                    break;
+            if (imageCount != mCorrectPosition) {
+                selectImage(imageUrl, imageCount);
             }
             imageCount++;
+        }
+    }
+
+    private void selectImage(String imageUrl, int position) {
+        switch (position) {
+            case 0:
+                loadImage(imageUrl, mQuestionImage1);
+                break;
+            case 1:
+                loadImage(imageUrl, mQuestionImage2);
+                break;
+            case 2:
+                loadImage(imageUrl, mQuestionImage3);
+                break;
+            case 3:
+                loadImage(imageUrl, mQuestionImage4);
+                break;
         }
     }
 
@@ -113,5 +139,38 @@ public class QuestionFraqment extends Fragment {
         Glide.with(getContext())
                 .load(imageUrl)
                 .into(imageView);
+    }
+
+    private void setCorrectAnswerPosition() {
+        this.mCorrectPosition = QuestionUtils.getRandomPosition();
+        Log.d(LOG_TAG, "setCorrectAnswerPosition(): Correct image position set at: " + mCorrectPosition);
+    }
+
+    private void checkAnswer(int position) {
+        if (position == mCorrectPosition) {
+            // TODO: Go to next fragment.
+        } else {
+            // TODO: Show incorrect.
+        }
+    }
+
+    @OnClick(R.id.fragment_question_image_1)
+    public void onQuestionImage1Clicked() {
+        checkAnswer(POSITION_1);
+    }
+
+    @OnClick(R.id.fragment_question_image_2)
+    public void onQuestionImage2Clicked() {
+        checkAnswer(POSITION_2);
+    }
+
+    @OnClick(R.id.fragment_question_image_3)
+    public void onQuestionImage3Clicked() {
+        checkAnswer(POSITION_3);
+    }
+
+    @OnClick(R.id.fragment_question_image_4)
+    public void onQuestionImage4Clicked() {
+        checkAnswer(POSITION_4);
     }
 }

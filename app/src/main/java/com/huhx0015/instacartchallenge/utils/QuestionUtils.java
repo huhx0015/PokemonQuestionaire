@@ -10,9 +10,16 @@ import java.util.Random;
 
 public class QuestionUtils {
 
+    private static final int NUMBER_OF_IMAGES = 4;
+
     public static Question getRandomQuestion(List<Question> questionList) {
         Random random = new Random();
         int randomPosition = random.nextInt(questionList.size());
         return questionList.get(randomPosition);
+    }
+
+    public static int getRandomPosition() {
+        Random random = new Random();
+        return random.nextInt(NUMBER_OF_IMAGES);
     }
 }

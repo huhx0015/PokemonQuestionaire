@@ -7,6 +7,6 @@
     <dimen name="fragment_padding">16dp</dimen>
 
     <dimen name="grocery_item_dimen">64dp</dimen>
-    <dimen name="grocery_item_side_margin">16dp</dimen>
+    <dimen name="grocery_item_side_margin">8dp</dimen>
 
 </resources>
