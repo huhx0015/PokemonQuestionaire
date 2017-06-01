@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -15,8 +14,10 @@ import android.widget.Toast;
 import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
+import com.huhx0015.instacartchallenge.models.Question;
 import com.huhx0015.instacartchallenge.models.QuestionsResponse;
 import com.huhx0015.instacartchallenge.utils.JsonUtils;
+import com.huhx0015.instacartchallenge.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -26,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
     private static final String INSTANCE_QUESTIONS = LOG_TAG + "_QUESTIONS";
+    private static final String INSTANCE_SELECTED_QUESTION = LOG_TAG + "_SELECTED_QUESTION";
 
     private String mFragmentTag;
+    private Question mSelectedQuestion;
     private QuestionsResponse mQuestionsResponse;
 
     @BindView(R.id.main_fragment_container) RelativeLayout mFragmentContainer;
@@ -43,10 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mQuestionsResponse = savedInstanceState.getParcelable(INSTANCE_QUESTIONS);
+            mSelectedQuestion = savedInstanceState.getParcelable(INSTANCE_SELECTED_QUESTION);
             mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
 
-            if (mQuestionsResponse != null) {
-                loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
+            if (mSelectedQuestion != null) {
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion), QuestionFraqment.class.getSimpleName());
                 return;
             }
         }
@@ -60,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (mQuestionsResponse != null) {
             outState.putParcelable(INSTANCE_QUESTIONS, mQuestionsResponse);
+        }
+        if (mSelectedQuestion != null) {
+            outState.putParcelable(INSTANCE_SELECTED_QUESTION, mSelectedQuestion);
         }
         outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
     }
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
-    private class JsonAsyncTask extends AsyncTask<String, Void, QuestionsResponse> {
+    private class JsonAsyncTask extends AsyncTask<String, Void, Question> {
 
         @Override
         protected void onPreExecute() {
@@ -91,23 +98,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected QuestionsResponse doInBackground(String... params) {
+        protected Question doInBackground(String... params) {
             String responseJson = JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
-            return JsonUtils.getGroceryQuestionsFromJson(responseJson);
+            QuestionsResponse questionResponse = JsonUtils.getGroceryQuestionsFromJson(responseJson);
+
+            if (questionResponse != null && questionResponse.getQuestionList() != null &&
+                    questionResponse.getQuestionList().size() > 0) {
+                mQuestionsResponse = questionResponse;
+                return QuestionUtils.getRandomQuestion(questionResponse.getQuestionList());
+            }
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(QuestionsResponse response) {
-            super.onPostExecute(response);
+        protected void onPostExecute(Question question) {
+            super.onPostExecute(question);
             mProgressBar.setVisibility(View.GONE);
 
-            if (response == null) {
-                Toast.makeText(MainActivity.this, "An error occurred while attempting to read the JSON file.",
+            if (question == null) {
+                Toast.makeText(MainActivity.this, "An error occurred while attempting to load a question.",
                         Toast.LENGTH_LONG).show();
             } else {
-                mQuestionsResponse = response;
-                loadFragment(new QuestionFraqment(), QuestionFraqment.class.getSimpleName());
-                Log.d(LOG_TAG, "Size: " + response.getQuestionList().size());
+                mSelectedQuestion = question;
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion), QuestionFraqment.class.getSimpleName());
             }
         }
     }

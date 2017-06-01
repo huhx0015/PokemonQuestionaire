@@ -16,24 +16,24 @@
         android:typeface="sans" />
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/fragment_question_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:gravity="center"
-        android:text="FOOD"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:typeface="sans" />
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/fragment_question_instruction_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:gravity="center"
-        android:text="@string/questions_instructions"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:typeface="sans" />
