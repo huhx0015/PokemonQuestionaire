@@ -24,7 +24,6 @@ public class QuestionFraqment extends Fragment {
     @BindView(R.id.fragment_question_image_3) AppCompatImageView mQuestionImage3;
     @BindView(R.id.fragment_question_image_4) AppCompatImageView mQuestionImage4;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,6 +42,11 @@ public class QuestionFraqment extends Fragment {
     }
 
     private void initView() {
+
+
+    }
+
+    private void initImages() {
 
 
     }
