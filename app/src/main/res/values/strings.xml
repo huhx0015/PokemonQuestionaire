@@ -5,4 +5,9 @@
     <string name="questions_title">Grocery Quiz Question</string>
     <string name="questions_instructions">Tap on the grocery item image that corresponds with %1$s.</string>
 
+    <string name="result_title">Your Answer Is:</string>
+    <string name="result_correct">CORRECT!</string>
+    <string name="result_wrong">INCORRECT!</string>
+    <string name="result_try_again">Try Again</string>
+
 </resources>

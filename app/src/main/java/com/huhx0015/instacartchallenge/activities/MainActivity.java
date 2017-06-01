@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
     @Override
     public void onAnswerSelected(boolean isCorrect) {
-        loadFragment(ResultFragment.newInstance(), ResultFragment.class.getSimpleName());
+        loadFragment(ResultFragment.newInstance(isCorrect), ResultFragment.class.getSimpleName());
     }
 
     private class JsonAsyncTask extends AsyncTask<String, Void, Question> {

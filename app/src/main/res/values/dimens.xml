@@ -9,4 +9,6 @@
     <dimen name="grocery_item_dimen">64dp</dimen>
     <dimen name="grocery_item_side_margin">8dp</dimen>
 
+    <dimen name="result_try_again_button_margin">32dp</dimen>
+
 </resources>
