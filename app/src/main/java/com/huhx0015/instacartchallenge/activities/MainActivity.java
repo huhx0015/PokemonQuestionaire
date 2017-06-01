@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
 import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
 import com.huhx0015.instacartchallenge.R;
+import com.huhx0015.instacartchallenge.fragments.ResultFragment;
 import com.huhx0015.instacartchallenge.models.Question;
 import com.huhx0015.instacartchallenge.models.QuestionsResponse;
 import com.huhx0015.instacartchallenge.utils.JsonUtils;
@@ -21,7 +23,7 @@ import com.huhx0015.instacartchallenge.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
 
             if (mSelectedQuestion != null) {
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion), QuestionFraqment.class.getSimpleName());
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, this), QuestionFraqment.class.getSimpleName());
                 return;
             }
         }
@@ -89,6 +91,11 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    @Override
+    public void onAnswerSelected(boolean isCorrect) {
+        loadFragment(ResultFragment.newInstance(), ResultFragment.class.getSimpleName());
+    }
+
     private class JsonAsyncTask extends AsyncTask<String, Void, Question> {
 
         @Override
@@ -121,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             } else {
                 mSelectedQuestion = question;
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion), QuestionFraqment.class.getSimpleName());
+                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, MainActivity.this), QuestionFraqment.class.getSimpleName());
             }
         }
     }

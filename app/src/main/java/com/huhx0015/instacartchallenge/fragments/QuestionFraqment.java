@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.huhx0015.instacartchallenge.R;
+import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
 import com.huhx0015.instacartchallenge.models.Question;
 import com.huhx0015.instacartchallenge.utils.QuestionUtils;
 import butterknife.BindView;
@@ -34,6 +35,7 @@ public class QuestionFraqment extends Fragment {
     private static final int POSITION_4 = 4;
 
     private int mCorrectPosition = -1;
+    private MainActivityListener mListener;
     private Question mQuestion;
     private Unbinder mUnbinder;
 
@@ -44,9 +46,10 @@ public class QuestionFraqment extends Fragment {
     @BindView(R.id.fragment_question_text) AppCompatTextView mQuestionText;
     @BindView(R.id.fragment_question_instruction_text) AppCompatTextView mInstructionText;
 
-    public static QuestionFraqment newInstance(Question question) {
+    public static QuestionFraqment newInstance(Question question, MainActivityListener listener) {
         QuestionFraqment fraqment = new QuestionFraqment();
         fraqment.mQuestion = question;
+        fraqment.mListener = listener;
         return fraqment;
     }
 
@@ -148,8 +151,10 @@ public class QuestionFraqment extends Fragment {
 
     private void checkAnswer(int position) {
         if (position == mCorrectPosition) {
+            mListener.onAnswerSelected(true);
             // TODO: Go to next fragment.
         } else {
+            mListener.onAnswerSelected(false);
             // TODO: Show incorrect.
         }
     }
