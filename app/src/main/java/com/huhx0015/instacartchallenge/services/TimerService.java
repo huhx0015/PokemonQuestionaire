@@ -14,6 +14,8 @@ import com.huhx0015.instacartchallenge.constants.GroceryConstants;
 
 public class TimerService extends Service {
 
+    private CountDownTimer mTimer;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -21,14 +23,9 @@ public class TimerService extends Service {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        new CountDownTimer(GroceryConstants.QUIZ_COUNTDOWN_TIME_LIMIT, GroceryConstants.QUIZ_COUNTDOWN_TIME_INTERVAL) {
+        mTimer = new CountDownTimer(GroceryConstants.QUIZ_COUNTDOWN_TIME_LIMIT, GroceryConstants.QUIZ_COUNTDOWN_TIME_INTERVAL) {
             public void onTick(long millisUntilFinished) {
                 long timeRemaining = millisUntilFinished / GroceryConstants.QUIZ_COUNTDOWN_TIME_INTERVAL;
 
@@ -46,5 +43,14 @@ public class TimerService extends Service {
         }.start();
 
         return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
     }
 }

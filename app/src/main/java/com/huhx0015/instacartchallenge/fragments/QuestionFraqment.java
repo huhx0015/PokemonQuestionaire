@@ -98,14 +98,15 @@ public class QuestionFraqment extends Fragment {
 
     @Override
     public void onResume() {
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerReceiever,
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerReceiver,
                 new IntentFilter(GroceryConstants.BROADCAST_TIMER));
         super.onResume();
+        checkTimeUp();
     }
 
     @Override
     public void onPause() {
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mTimerReceiever);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mTimerReceiver);
         super.onPause();
     }
 
@@ -203,6 +204,17 @@ public class QuestionFraqment extends Fragment {
         }
     }
 
+    private void checkTimeUp() {
+        if (mIsTimeUp) {
+            mTimeRemainingText.setText(getString(R.string.questions_time_run_out));
+
+            if (mSubmitButton.getVisibility() == View.GONE) {
+                mSubmitButton.setVisibility(View.VISIBLE);
+            }
+            mSubmitButton.setText(getString(R.string.result_try_again));
+        }
+    }
+
     @OnClick(R.id.fragment_question_image_1)
     public void onQuestionImage1Clicked() {
         mSelectedPosition = POSITION_1;
@@ -236,7 +248,7 @@ public class QuestionFraqment extends Fragment {
         }
     }
 
-    private BroadcastReceiver mTimerReceiever = new BroadcastReceiver() {
+    private BroadcastReceiver mTimerReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(LOG_TAG, "mTimerReceiver: Received update from TimerService.");
@@ -246,16 +258,8 @@ public class QuestionFraqment extends Fragment {
                 mTimeRemainingText.setText(String.format(getString(R.string.questions_seconds), timeRemaining));
             }
 
-            boolean isFinished = intent.getBooleanExtra(GroceryConstants.EVENT_TIMER_FINISHED, false);
-            if (isFinished) {
-                mIsTimeUp = true;
-                mTimeRemainingText.setText(getString(R.string.questions_time_run_out));
-
-                if (mSubmitButton.getVisibility() == View.GONE) {
-                    mSubmitButton.setVisibility(View.VISIBLE);
-                }
-                mSubmitButton.setText(getString(R.string.result_try_again));
-            }
+            mIsTimeUp = intent.getBooleanExtra(GroceryConstants.EVENT_TIMER_FINISHED, false);
+            checkTimeUp();
         }
     };
 }

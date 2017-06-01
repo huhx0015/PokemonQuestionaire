@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
         loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
                 QuestionFraqment.class.getSimpleName());
-        if ()
         startTimer(true);
     }
 
