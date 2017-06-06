@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.fragments;
+package com.huhx0015.pokemonquestionaire.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,8 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.huhx0015.instacartchallenge.R;
-import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.R;
+import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

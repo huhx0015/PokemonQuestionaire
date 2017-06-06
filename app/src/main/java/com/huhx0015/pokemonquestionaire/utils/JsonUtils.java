@@ -1,12 +1,12 @@
-package com.huhx0015.instacartchallenge.utils;
+package com.huhx0015.pokemonquestionaire.utils;
 
 import android.content.Context;
 import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.huhx0015.instacartchallenge.constants.GroceryConstants;
-import com.huhx0015.instacartchallenge.models.QuestionsJsonDeserializer;
-import com.huhx0015.instacartchallenge.models.QuestionsResponse;
+import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.models.QuestionsJsonDeserializer;
+import com.huhx0015.pokemonquestionaire.models.QuestionsResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -27,7 +27,7 @@ public class JsonUtils {
             inputStream.read(buffer);
             inputStream.close();
 
-            return new String(buffer, GroceryConstants.TYPE_ENCODING_UTF8);
+            return new String(buffer, PokemonConstants.TYPE_ENCODING_UTF8);
         } catch (IOException e) {
             Log.e(LOG_TAG, "ERROR: Failed to open " + fileName + " json file.");
         }

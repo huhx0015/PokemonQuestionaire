@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.fragments;
+package com.huhx0015.pokemonquestionaire.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,11 +16,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
-import com.huhx0015.instacartchallenge.R;
-import com.huhx0015.instacartchallenge.constants.GroceryConstants;
-import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
-import com.huhx0015.instacartchallenge.models.Question;
-import com.huhx0015.instacartchallenge.utils.QuestionUtils;
+import com.huhx0015.pokemonquestionaire.R;
+import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.models.Question;
+import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -75,12 +75,12 @@ public class QuestionFraqment extends Fragment {
 
         if (savedInstanceState != null) {
             mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
-            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, GroceryConstants.STATE_CORRECT_POSITION_UNSET);
-            mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, GroceryConstants.STATE_CORRECT_POSITION_UNSET);
+            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
+            mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
         }
 
-        if (mCorrectPosition == GroceryConstants.STATE_CORRECT_POSITION_UNSET) {
+        if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
             setCorrectAnswerPosition();
         }
 
@@ -99,7 +99,7 @@ public class QuestionFraqment extends Fragment {
     @Override
     public void onResume() {
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerReceiver,
-                new IntentFilter(GroceryConstants.BROADCAST_TIMER));
+                new IntentFilter(PokemonConstants.BROADCAST_TIMER));
         super.onResume();
         checkTimeUp();
     }
@@ -253,12 +253,12 @@ public class QuestionFraqment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.d(LOG_TAG, "mTimerReceiver: Received update from TimerService.");
 
-            long timeRemaining = intent.getLongExtra(GroceryConstants.EVENT_TIMER_REMAINING, 0);
+            long timeRemaining = intent.getLongExtra(PokemonConstants.EVENT_TIMER_REMAINING, 0);
             if (timeRemaining != 0) {
                 mTimeRemainingText.setText(String.format(getString(R.string.questions_seconds), timeRemaining));
             }
 
-            mIsTimeUp = intent.getBooleanExtra(GroceryConstants.EVENT_TIMER_FINISHED, false);
+            mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);
             checkTimeUp();
         }
     };

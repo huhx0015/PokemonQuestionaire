@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.activities;
+package com.huhx0015.pokemonquestionaire.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,17 +12,16 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
-import com.huhx0015.instacartchallenge.services.TimerService;
-import com.huhx0015.instacartchallenge.interfaces.MainActivityListener;
-import com.huhx0015.instacartchallenge.constants.GroceryConstants;
-import com.huhx0015.instacartchallenge.fragments.QuestionFraqment;
-import com.huhx0015.instacartchallenge.R;
-import com.huhx0015.instacartchallenge.fragments.ResultFragment;
-import com.huhx0015.instacartchallenge.models.Question;
-import com.huhx0015.instacartchallenge.models.QuestionsResponse;
-import com.huhx0015.instacartchallenge.utils.JsonUtils;
-import com.huhx0015.instacartchallenge.utils.QuestionUtils;
+import com.huhx0015.pokemonquestionaire.services.TimerService;
+import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.fragments.QuestionFraqment;
+import com.huhx0015.pokemonquestionaire.R;
+import com.huhx0015.pokemonquestionaire.fragments.ResultFragment;
+import com.huhx0015.pokemonquestionaire.models.Question;
+import com.huhx0015.pokemonquestionaire.models.QuestionsResponse;
+import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
+import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     private static final String INSTANCE_SELECTED_QUESTION = LOG_TAG + "_SELECTED_QUESTION";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
-    private int mCorrectPosition = GroceryConstants.STATE_CORRECT_POSITION_UNSET;
+    private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private String mFragmentTag;
     private Question mSelectedQuestion;
     private QuestionsResponse mQuestionsResponse;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
     private void loadJson() {
         JsonAsyncTask task = new JsonAsyncTask();
-        task.execute(GroceryConstants.GROCERY_ASSET_NAME);
+        task.execute(PokemonConstants.POKEMON_ASSET_NAME);
     }
 
     private void loadFragment(Fragment fragment, String tag) {
@@ -141,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
 
         @Override
         protected Question doInBackground(String... params) {
-            String responseJson = JsonUtils.loadJsonFromAsset(GroceryConstants.GROCERY_ASSET_NAME, MainActivity.this);
+            String responseJson = JsonUtils.loadJsonFromAsset(PokemonConstants.POKEMON_ASSET_NAME, MainActivity.this);
             QuestionsResponse questionResponse = JsonUtils.getGroceryQuestionsFromJson(responseJson);
 
             if (questionResponse != null && questionResponse.getQuestionList() != null &&

@@ -1,0 +1,74 @@
+{
+  "Bulbasaur": [
+    "https://img.pokemondb.net/artwork/bulbasaur.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/squirtle.jpg",
+    "https://img.pokemondb.net/artwork/pidgey.jpg"
+  ],
+  "Pikachu": [
+    "https://img.pokemondb.net/artwork/pikachu.jpg",
+    "https://img.pokemondb.net/artwork/bulbasaur.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/gyarados.jpg"
+  ],
+  "Squirtle": [
+    "https://img.pokemondb.net/artwork/squirtle.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/bulbasaur.jpg",
+    "https://img.pokemondb.net/artwork/magikarp.jpg"
+  ],
+  "Mewtwo": [
+    "https://img.pokemondb.net/artwork/mewtwo.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/rattata.jpg",
+    "https://img.pokemondb.net/artwork/bulbasaur.jpg"
+  ],
+  "Pidgey": [
+    "https://img.pokemondb.net/artwork/pidgey.jpg",
+    "https://img.pokemondb.net/artwork/gyarados.jpg",
+    "https://img.pokemondb.net/artwork/rattata.jpg",
+    "https://img.pokemondb.net/artwork/magikarp.jpg"
+  ],
+  "Rattata": [
+    "https://img.pokemondb.net/artwork/rattata.jpg",
+    "https://img.pokemondb.net/artwork/mewtwo.jpg",
+    "https://img.pokemondb.net/artwork/magikarp.jpg",
+    "https://img.pokemondb.net/artwork/zapdos.jpg"
+  ],
+  "Magikarp": [
+    "https://img.pokemondb.net/artwork/magikarp.jpg",
+    "https://img.pokemondb.net/artwork/pidgey.jpg",
+    "https://img.pokemondb.net/artwork/zapdos.jpg",
+    "https://img.pokemondb.net/artwork/squirtle.jpg"
+  ],
+  "Gyarados": [
+    "https://img.pokemondb.net/artwork/gyarados.jpg",
+    "https://img.pokemondb.net/artwork/squirtle.jpg",
+    "https://img.pokemondb.net/artwork/mewtwo.jpg",
+    "https://img.pokemondb.net/artwork/magikarp.jpg"
+  ],
+  "Snorlax": [
+    "https://img.pokemondb.net/artwork/snorlax.jpg",
+    "https://img.pokemondb.net/artwork/rattata.jpg",
+    "https://img.pokemondb.net/artwork/lapras.jpg",
+    "https://img.pokemondb.net/artwork/pidgey.jpg"
+  ],
+  "Zapdos": [
+    "https://img.pokemondb.net/artwork/zapdos.jpg",
+    "https://img.pokemondb.net/artwork/squirtle.jpg",
+    "https://img.pokemondb.net/artwork/pidgey.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg"
+  ],
+  "Charmander": [
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/gyarados.jpg",
+    "https://img.pokemondb.net/artwork/lapras.jpg",
+    "https://img.pokemondb.net/artwork/squirtle.jpg"
+  ],
+  "Lapras": [
+    "https://img.pokemondb.net/artwork/lapras.jpg",
+    "https://img.pokemondb.net/artwork/rattata.jpg",
+    "https://img.pokemondb.net/artwork/charmander.jpg",
+    "https://img.pokemondb.net/artwork/pidgey.jpg"
+  ]
+}

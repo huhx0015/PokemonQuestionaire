@@ -1,6 +1,6 @@
-package com.huhx0015.instacartchallenge.utils;
+package com.huhx0015.pokemonquestionaire.utils;
 
-import com.huhx0015.instacartchallenge.models.Question;
+import com.huhx0015.pokemonquestionaire.models.Question;
 import java.util.List;
 import java.util.Random;
 

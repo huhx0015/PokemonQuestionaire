@@ -1,9 +1,9 @@
 <resources>
 
-    <string name="app_name">Grocery Questionaire</string>
+    <string name="app_name">Pokémon Questionnaire</string>
 
-    <string name="questions_title">Grocery Quiz Question</string>
-    <string name="questions_instructions">Tap on the grocery item image that corresponds with %1$s.</string>
+    <string name="questions_title">Who\'s that Pokémon?</string>
+    <string name="questions_instructions">Tap on the Pokémon image that corresponds with %1$s.</string>
     <string name="questions_time_remaining">Time Remaining:</string>
     <string name="questions_seconds">%1$d Seconds Left</string>
     <string name="questions_time_run_out">Time\'s Up!</string>

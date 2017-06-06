@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.models;
+package com.huhx0015.pokemonquestionaire.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;

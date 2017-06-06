@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.services;
+package com.huhx0015.pokemonquestionaire.services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import com.huhx0015.instacartchallenge.constants.GroceryConstants;
+import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
@@ -25,18 +25,18 @@ public class TimerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        mTimer = new CountDownTimer(GroceryConstants.QUIZ_COUNTDOWN_TIME_LIMIT, GroceryConstants.QUIZ_COUNTDOWN_TIME_INTERVAL) {
+        mTimer = new CountDownTimer(PokemonConstants.QUIZ_COUNTDOWN_TIME_LIMIT, PokemonConstants.QUIZ_COUNTDOWN_TIME_INTERVAL) {
             public void onTick(long millisUntilFinished) {
-                long timeRemaining = millisUntilFinished / GroceryConstants.QUIZ_COUNTDOWN_TIME_INTERVAL;
+                long timeRemaining = millisUntilFinished / PokemonConstants.QUIZ_COUNTDOWN_TIME_INTERVAL;
 
-                Intent intent = new Intent(GroceryConstants.BROADCAST_TIMER);
-                intent.putExtra(GroceryConstants.EVENT_TIMER_REMAINING, timeRemaining);
+                Intent intent = new Intent(PokemonConstants.BROADCAST_TIMER);
+                intent.putExtra(PokemonConstants.EVENT_TIMER_REMAINING, timeRemaining);
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             }
 
             public void onFinish() {
-                Intent intent = new Intent(GroceryConstants.BROADCAST_TIMER);
-                intent.putExtra(GroceryConstants.EVENT_TIMER_FINISHED, true);
+                Intent intent = new Intent(PokemonConstants.BROADCAST_TIMER);
+                intent.putExtra(PokemonConstants.EVENT_TIMER_FINISHED, true);
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
             }
 

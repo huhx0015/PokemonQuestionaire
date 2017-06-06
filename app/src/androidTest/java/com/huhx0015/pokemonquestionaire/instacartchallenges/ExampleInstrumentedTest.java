@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.instacartchallenges;
+package com.huhx0015.pokemonquestionaire.instacartchallenges;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

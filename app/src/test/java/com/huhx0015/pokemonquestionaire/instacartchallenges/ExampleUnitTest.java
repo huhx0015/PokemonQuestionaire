@@ -1,4 +1,4 @@
-package com.huhx0015.instacartchallenge.instacartchallenges;
+package com.huhx0015.pokemonquestionaire.instacartchallenges;
 
 import org.junit.Test;
 

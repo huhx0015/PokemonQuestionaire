@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.huhx0015.instacartchallenge">
+    package="com.huhx0015.pokemonquestionaire">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,9 +12,10 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.huhx0015.pokemonquestionaire.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -22,7 +23,7 @@
         </activity>
 
         <service
-            android:name=".services.TimerService">
+            android:name="com.huhx0015.pokemonquestionaire.services.TimerService">
         </service>
 
     </application>
