@@ -8,17 +8,17 @@ import java.util.List;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class Question implements Parcelable {
+public class Pokemon implements Parcelable {
 
     private String mItem;
     private List<String> mUrlList;
 
-    public Question(String item, List<String> urlList) {
+    public Pokemon(String item, List<String> urlList) {
         this.mItem = item;
         this.mUrlList = urlList;
     }
 
-    protected Question(Parcel in) {
+    protected Pokemon(Parcel in) {
         mItem = in.readString();
         mUrlList = in.createStringArrayList();
     }
@@ -31,15 +31,15 @@ public class Question implements Parcelable {
         return mUrlList;
     }
 
-    public static final Creator<Question> CREATOR = new Creator<Question>() {
+    public static final Creator<Pokemon> CREATOR = new Creator<Pokemon>() {
         @Override
-        public Question createFromParcel(Parcel in) {
-            return new Question(in);
+        public Pokemon createFromParcel(Parcel in) {
+            return new Pokemon(in);
         }
 
         @Override
-        public Question[] newArray(int size) {
-            return new Question[size];
+        public Pokemon[] newArray(int size) {
+            return new Pokemon[size];
         }
     };
 

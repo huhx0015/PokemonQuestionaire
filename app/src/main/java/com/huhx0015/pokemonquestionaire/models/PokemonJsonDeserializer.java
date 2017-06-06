@@ -16,20 +16,20 @@ import java.util.Map;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class QuestionsJsonDeserializer implements JsonDeserializer<QuestionsResponse> {
+public class PokemonJsonDeserializer implements JsonDeserializer<PokemonResponse> {
 
-    private static final String LOG_TAG = QuestionsJsonDeserializer.class.getSimpleName();
+    private static final String LOG_TAG = PokemonJsonDeserializer.class.getSimpleName();
 
     @Override
-    public QuestionsResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public PokemonResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        List<Question> questionList = null;
+        List<Pokemon> pokemonList = null;
 
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
 
             if (entry.getValue() instanceof JsonArray) {
                 String itemName = entry.getKey();
-                Log.d(LOG_TAG, "Item Name: " + itemName);
+                Log.d(LOG_TAG, "Pokemon: " + itemName);
 
                 JsonArray array = (JsonArray) entry.getValue();
 
@@ -41,13 +41,13 @@ public class QuestionsJsonDeserializer implements JsonDeserializer<QuestionsResp
                     urlList.add(url);
                 }
 
-                if (questionList == null) {
-                    questionList = new ArrayList<>();
+                if (pokemonList == null) {
+                    pokemonList = new ArrayList<>();
                 }
-                questionList.add(new Question(itemName, urlList));
+                pokemonList.add(new Pokemon(itemName, urlList));
             }
         }
 
-        return new QuestionsResponse(questionList);
+        return new PokemonResponse(pokemonList);
     }
 }

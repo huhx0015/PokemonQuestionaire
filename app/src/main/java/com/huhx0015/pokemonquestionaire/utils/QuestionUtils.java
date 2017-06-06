@@ -1,6 +1,7 @@
 package com.huhx0015.pokemonquestionaire.utils;
 
-import com.huhx0015.pokemonquestionaire.models.Question;
+import com.huhx0015.pokemonquestionaire.models.Pokemon;
+
 import java.util.List;
 import java.util.Random;
 
@@ -12,10 +13,10 @@ public class QuestionUtils {
 
     private static final int NUMBER_OF_IMAGES = 4;
 
-    public static Question getRandomQuestion(List<Question> questionList) {
+    public static Pokemon getRandomQuestion(List<Pokemon> pokemonList) {
         Random random = new Random();
-        int randomPosition = random.nextInt(questionList.size());
-        return questionList.get(randomPosition);
+        int randomPosition = random.nextInt(pokemonList.size());
+        return pokemonList.get(randomPosition);
     }
 
     public static int getRandomPosition() {

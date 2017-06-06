@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
-import com.huhx0015.pokemonquestionaire.models.Question;
+import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,10 +30,10 @@ import butterknife.Unbinder;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class QuestionFraqment extends Fragment {
+public class PokemonFraqment extends Fragment {
 
-    private static final String LOG_TAG = QuestionFraqment.class.getSimpleName();
-    private static final String INSTANCE_QUESTION = LOG_TAG + "_INSTANCE_QUESTION";
+    private static final String LOG_TAG = PokemonFraqment.class.getSimpleName();
+    private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
     private static final String INSTANCE_SELECTED_POSITION = LOG_TAG + "_INSTANCE_SELECTED_POSITION";
     private static final String INSTANCE_TIME_UP = LOG_TAG + "_INSTANCE_TIME_UP";
@@ -48,7 +48,7 @@ public class QuestionFraqment extends Fragment {
     private int mCorrectPosition;
     private int mSelectedPosition;
     private MainActivityListener mListener;
-    private Question mQuestion;
+    private Pokemon mPokemon;
     private Unbinder mUnbinder;
 
     @BindView(R.id.fragment_question_image_1) AppCompatImageView mQuestionImage1;
@@ -60,9 +60,9 @@ public class QuestionFraqment extends Fragment {
     @BindView(R.id.fragment_question_time_remaining) AppCompatTextView mTimeRemainingText;
     @BindView(R.id.fragment_question_submit_button) AppCompatButton mSubmitButton;
 
-    public static QuestionFraqment newInstance(Question question, int correctPosition, MainActivityListener listener) {
-        QuestionFraqment fraqment = new QuestionFraqment();
-        fraqment.mQuestion = question;
+    public static PokemonFraqment newInstance(Pokemon pokemon, int correctPosition, MainActivityListener listener) {
+        PokemonFraqment fraqment = new PokemonFraqment();
+        fraqment.mPokemon = pokemon;
         fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
         return fraqment;
@@ -74,7 +74,7 @@ public class QuestionFraqment extends Fragment {
         setRetainInstance(true);
 
         if (savedInstanceState != null) {
-            mQuestion = savedInstanceState.getParcelable(INSTANCE_QUESTION);
+            mPokemon = savedInstanceState.getParcelable(INSTANCE_POKEMON);
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
@@ -123,7 +123,7 @@ public class QuestionFraqment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(INSTANCE_QUESTION, mQuestion);
+        outState.putParcelable(INSTANCE_POKEMON, mPokemon);
         outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
         outState.putInt(INSTANCE_SELECTED_POSITION, mSelectedPosition);
         outState.putBoolean(INSTANCE_TIME_UP, mIsTimeUp);
@@ -135,8 +135,8 @@ public class QuestionFraqment extends Fragment {
     }
 
     private void initText() {
-        mQuestionText.setText(mQuestion.getItem());
-        mInstructionText.setText(String.format(getString(R.string.questions_instructions), mQuestion.getItem()));
+        mQuestionText.setText(mPokemon.getItem());
+        mInstructionText.setText(String.format(getString(R.string.questions_instructions), mPokemon.getItem()));
 
         if (mIsTimeUp) {
             mTimeRemainingText.setText(getString(R.string.questions_time_run_out));
@@ -146,14 +146,14 @@ public class QuestionFraqment extends Fragment {
     private void initImages() {
 
         // Sets the correct answer image.
-        setImage(mQuestion.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION), mCorrectPosition);
+        setImage(mPokemon.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION), mCorrectPosition);
 
         // Sets the rest of the images.
         int imageCount = 1;
         int position = 0;
-        int numberOfImages = mQuestion.getUrlList().size();
+        int numberOfImages = mPokemon.getUrlList().size();
         while (imageCount < numberOfImages) {
-            String url = mQuestion.getUrlList().get(imageCount);
+            String url = mPokemon.getUrlList().get(imageCount);
             if (position != mCorrectPosition) {
                 setImage(url, position);
                 imageCount++;

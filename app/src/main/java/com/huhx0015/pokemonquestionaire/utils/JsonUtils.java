@@ -5,8 +5,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.models.QuestionsJsonDeserializer;
-import com.huhx0015.pokemonquestionaire.models.QuestionsResponse;
+import com.huhx0015.pokemonquestionaire.models.PokemonJsonDeserializer;
+import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -34,10 +34,10 @@ public class JsonUtils {
         return null;
     }
 
-    public static QuestionsResponse getGroceryQuestionsFromJson(String response) {
+    public static PokemonResponse getGroceryQuestionsFromJson(String response) {
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(QuestionsResponse.class, new QuestionsJsonDeserializer());
+        builder.registerTypeAdapter(PokemonResponse.class, new PokemonJsonDeserializer());
         Gson gson = builder.create();
-        return gson.fromJson(response, QuestionsResponse.class);
+        return gson.fromJson(response, PokemonResponse.class);
     }
 }

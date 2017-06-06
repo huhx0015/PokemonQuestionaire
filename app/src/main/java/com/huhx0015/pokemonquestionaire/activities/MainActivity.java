@@ -12,14 +12,15 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.fragments.QuestionFraqment;
+import com.huhx0015.pokemonquestionaire.fragments.PokemonFraqment;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.fragments.ResultFragment;
-import com.huhx0015.pokemonquestionaire.models.Question;
-import com.huhx0015.pokemonquestionaire.models.QuestionsResponse;
+import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
@@ -30,14 +31,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
-    private static final String INSTANCE_QUESTIONS = LOG_TAG + "_QUESTIONS";
-    private static final String INSTANCE_SELECTED_QUESTION = LOG_TAG + "_SELECTED_QUESTION";
+    private static final String INSTANCE_POKEMONS = LOG_TAG + "_POKEMONS";
+    private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
     private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private String mFragmentTag;
-    private Question mSelectedQuestion;
-    private QuestionsResponse mQuestionsResponse;
+    private Pokemon mSelectedPokemon;
+    private PokemonResponse mPokemonResponse;
 
     @BindView(R.id.main_fragment_container) RelativeLayout mFragmentContainer;
     @BindView(R.id.main_progress_bar) ProgressBar mProgressBar;
@@ -51,14 +52,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         initView();
 
         if (savedInstanceState != null) {
-            mQuestionsResponse = savedInstanceState.getParcelable(INSTANCE_QUESTIONS);
-            mSelectedQuestion = savedInstanceState.getParcelable(INSTANCE_SELECTED_QUESTION);
+            mPokemonResponse = savedInstanceState.getParcelable(INSTANCE_POKEMONS);
+            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
             mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
 
-            if (mSelectedQuestion != null) {
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
-                        QuestionFraqment.class.getSimpleName());
+            if (mSelectedPokemon != null) {
+                loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                        PokemonFraqment.class.getSimpleName());
                 return;
             }
         }
@@ -76,11 +77,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (mQuestionsResponse != null) {
-            outState.putParcelable(INSTANCE_QUESTIONS, mQuestionsResponse);
+        if (mPokemonResponse != null) {
+            outState.putParcelable(INSTANCE_POKEMONS, mPokemonResponse);
         }
-        if (mSelectedQuestion != null) {
-            outState.putParcelable(INSTANCE_SELECTED_QUESTION, mSelectedQuestion);
+        if (mSelectedPokemon != null) {
+            outState.putParcelable(INSTANCE_SELECTED_POKEMON, mSelectedPokemon);
         }
         outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
         outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
@@ -121,16 +122,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
     @Override
     public void onTryAgainSelected(boolean isNewQuestion) {
         if (isNewQuestion) {
-            mSelectedQuestion = QuestionUtils.getRandomQuestion(mQuestionsResponse.getQuestionList());
+            mSelectedPokemon = QuestionUtils.getRandomQuestion(mPokemonResponse.getQuestionList());
             mCorrectPosition = QuestionUtils.getRandomPosition();
         }
 
-        loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition, this),
-                QuestionFraqment.class.getSimpleName());
+        loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                PokemonFraqment.class.getSimpleName());
         startTimer(true);
     }
 
-    private class JsonAsyncTask extends AsyncTask<String, Void, Question> {
+    private class JsonAsyncTask extends AsyncTask<String, Void, Pokemon> {
 
         @Override
         protected void onPreExecute() {
@@ -139,13 +140,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         }
 
         @Override
-        protected Question doInBackground(String... params) {
+        protected Pokemon doInBackground(String... params) {
             String responseJson = JsonUtils.loadJsonFromAsset(PokemonConstants.POKEMON_ASSET_NAME, MainActivity.this);
-            QuestionsResponse questionResponse = JsonUtils.getGroceryQuestionsFromJson(responseJson);
+            PokemonResponse questionResponse = JsonUtils.getGroceryQuestionsFromJson(responseJson);
 
             if (questionResponse != null && questionResponse.getQuestionList() != null &&
                     questionResponse.getQuestionList().size() > 0) {
-                mQuestionsResponse = questionResponse;
+                mPokemonResponse = questionResponse;
                 return QuestionUtils.getRandomQuestion(questionResponse.getQuestionList());
             }
 
@@ -153,18 +154,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         }
 
         @Override
-        protected void onPostExecute(Question question) {
-            super.onPostExecute(question);
+        protected void onPostExecute(Pokemon pokemon) {
+            super.onPostExecute(pokemon);
             mProgressBar.setVisibility(View.GONE);
 
-            if (question == null) {
-                Toast.makeText(MainActivity.this, "An error occurred while attempting to load a question.",
+            if (pokemon == null) {
+                Toast.makeText(MainActivity.this, "An error occurred while attempting to load a pokemon.",
                         Toast.LENGTH_LONG).show();
             } else {
-                mSelectedQuestion = question;
+                mSelectedPokemon = pokemon;
                 mCorrectPosition = QuestionUtils.getRandomPosition();
-                loadFragment(QuestionFraqment.newInstance(mSelectedQuestion, mCorrectPosition,
-                        MainActivity.this), QuestionFraqment.class.getSimpleName());
+                loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
+                        MainActivity.this), PokemonFraqment.class.getSimpleName());
                 startTimer(true);
             }
         }
