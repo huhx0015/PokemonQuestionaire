@@ -1,5 +1,7 @@
 package com.huhx0015.pokemonquestionaire.activities;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +14,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
@@ -26,7 +27,7 @@ import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainActivityListener {
+public class MainActivity extends AppCompatActivity implements LifecycleOwner, MainActivityListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -87,6 +88,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
     }
 
+    /** LIFECYCLE OWNER METHODS ________________________________________________________________ **/
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return null;
+    }
+
+    /** LISTENER METHODS _______________________________________________________________________ **/
+
+    @Override
+    public void onAnswerSelected(boolean isCorrect) {
+        loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
+        startTimer(false);
+    }
+
+    @Override
+    public void onTryAgainSelected(boolean isNewQuestion) {
+        if (isNewQuestion) {
+            mSelectedPokemon = QuestionUtils.getRandomQuestion(mPokemonResponse.getQuestionList());
+            mCorrectPosition = QuestionUtils.getRandomPosition();
+        }
+
+        loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                PokemonFraqment.class.getSimpleName());
+        startTimer(true);
+    }
+
+    /** INIT METHODS ___________________________________________________________________________ **/
+
     private void initView() {
         setSupportActionBar(mToolbar);
     }
@@ -113,23 +143,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityListe
         }
     }
 
-    @Override
-    public void onAnswerSelected(boolean isCorrect) {
-        loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
-        startTimer(false);
-    }
-
-    @Override
-    public void onTryAgainSelected(boolean isNewQuestion) {
-        if (isNewQuestion) {
-            mSelectedPokemon = QuestionUtils.getRandomQuestion(mPokemonResponse.getQuestionList());
-            mCorrectPosition = QuestionUtils.getRandomPosition();
-        }
-
-        loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                PokemonFraqment.class.getSimpleName());
-        startTimer(true);
-    }
+    /** SUBCLASSES _____________________________________________________________________________ **/
 
     private class JsonAsyncTask extends AsyncTask<String, Void, Pokemon> {
 

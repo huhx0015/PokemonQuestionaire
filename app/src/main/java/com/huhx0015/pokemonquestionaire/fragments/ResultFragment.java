@@ -1,8 +1,8 @@
 package com.huhx0015.pokemonquestionaire.fragments;
 
+import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import butterknife.Unbinder;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class ResultFragment extends Fragment {
+public class ResultFragment extends LifecycleFragment {
 
     private static final String LOG_TAG = ResultFragment.class.getSimpleName();
     private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_INSTANCE_IS_CORRECT";
