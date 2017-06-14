@@ -6,6 +6,8 @@ package com.huhx0015.pokemonquestionaire.constants;
 
 public class PokemonConstants {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     public static final String POKEMON_ASSET_NAME = "pokemon.json";
     public static final String TYPE_ENCODING_UTF8 = "UTF-8";
 

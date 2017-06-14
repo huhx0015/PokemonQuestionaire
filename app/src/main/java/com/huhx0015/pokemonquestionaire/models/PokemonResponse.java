@@ -10,6 +10,8 @@ import java.util.List;
 
 public class PokemonResponse implements Parcelable {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private List<Pokemon> mPokemonList;
 
     public PokemonResponse(List<Pokemon> pokemonList) {

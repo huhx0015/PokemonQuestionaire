@@ -29,6 +29,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";

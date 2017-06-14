@@ -21,6 +21,8 @@ import butterknife.Unbinder;
 
 public class ResultFragment extends LifecycleFragment {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = ResultFragment.class.getSimpleName();
     private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_INSTANCE_IS_CORRECT";
 

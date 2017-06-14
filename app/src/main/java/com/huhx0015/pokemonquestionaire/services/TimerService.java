@@ -14,6 +14,8 @@ import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 
 public class TimerService extends Service {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private CountDownTimer mTimer;
 
     @Nullable

@@ -32,6 +32,8 @@ import butterknife.Unbinder;
 
 public class PokemonFraqment extends LifecycleFragment {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = PokemonFraqment.class.getSimpleName();
     private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";

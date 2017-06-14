@@ -11,6 +11,8 @@ import java.util.Random;
 
 public class QuestionUtils {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final int NUMBER_OF_IMAGES = 4;
 
     public static Pokemon getRandomQuestion(List<Pokemon> pokemonList) {

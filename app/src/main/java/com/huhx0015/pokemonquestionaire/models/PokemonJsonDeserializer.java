@@ -18,6 +18,8 @@ import java.util.Map;
 
 public class PokemonJsonDeserializer implements JsonDeserializer<PokemonResponse> {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = PokemonJsonDeserializer.class.getSimpleName();
 
     @Override

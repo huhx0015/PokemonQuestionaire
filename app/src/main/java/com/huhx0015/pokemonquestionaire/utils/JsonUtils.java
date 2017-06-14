@@ -16,6 +16,8 @@ import java.io.InputStream;
 
 public class JsonUtils {
 
+    /** CLASS VARIABLES ________________________________________________________________________ **/
+
     private static final String LOG_TAG = JsonUtils.class.getSimpleName();
 
     public static String loadJsonFromAsset(String fileName, Context context) {
