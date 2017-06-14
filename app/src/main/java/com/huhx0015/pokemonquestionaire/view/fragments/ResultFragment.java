@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.fragments;
+package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.huhx0015.pokemonquestionaire.R;
-import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

@@ -1,7 +1,7 @@
-package com.huhx0015.pokemonquestionaire.activities;
+package com.huhx0015.pokemonquestionaire.view.activities;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
+import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,18 +16,18 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
-import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.fragments.PokemonFraqment;
+import com.huhx0015.pokemonquestionaire.view.fragments.PokemonFraqment;
 import com.huhx0015.pokemonquestionaire.R;
-import com.huhx0015.pokemonquestionaire.fragments.ResultFragment;
+import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
 import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements LifecycleOwner, MainActivityListener {
+public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleOwner, M
     /** LIFECYCLE OWNER METHODS ________________________________________________________________ **/
 
     @Override
-    public Lifecycle getLifecycle() {
+    public LifecycleRegistry getLifecycle() {
         return null;
     }
 

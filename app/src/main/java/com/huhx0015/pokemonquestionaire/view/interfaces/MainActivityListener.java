@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.interfaces;
+package com.huhx0015.pokemonquestionaire.view.interfaces;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.

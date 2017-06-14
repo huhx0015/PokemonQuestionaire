@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.fragments;
+package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
 import android.content.BroadcastReceiver;
@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import butterknife.BindView;
