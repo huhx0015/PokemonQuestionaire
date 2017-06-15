@@ -2,24 +2,23 @@ package com.huhx0015.pokemonquestionaire.view.activities;
 
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 import com.huhx0015.pokemonquestionaire.databinding.ActivityMainBinding;
 import com.huhx0015.pokemonquestionaire.databinding.ContentMainBinding;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
+import com.huhx0015.pokemonquestionaire.utils.SnackbarUtils;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFraqment;
@@ -194,8 +193,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
                     startTimer(true);
 
                 } else {
-                    Toast.makeText(MainActivity.this, "An error occurred while attempting to load a pokemon.",
-                            Toast.LENGTH_LONG).show();
+                    SnackbarUtils.displaySnackbar(mActivityMainBinding.getRoot(),
+                            "An error occurred while attempting to load a pokemon.",
+                            Snackbar.LENGTH_LONG, ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }
         };
