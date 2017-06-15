@@ -12,13 +12,20 @@ import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 
 public class QuestionResultViewModel extends ViewModel {
 
-    private final Pokemon mSelectedPokemon;
-    private final int mCorrectPosition;
+    private Pokemon mSelectedPokemon = null;
+    private int mCorrectPosition = 0;
+
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
     public QuestionResultViewModel(@NonNull Pokemon selectedPokemon, int correctPosition) {
         this.mSelectedPokemon = selectedPokemon;
         this.mCorrectPosition = correctPosition;
     }
+
+    public QuestionResultViewModel() {}
+
+
+
 
 
 

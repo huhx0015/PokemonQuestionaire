@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel"/>
+            type="com.huhx0015.pokemonquestionaire.viewmodels.fragments.ResultViewModel"/>
     </data>
 
     <LinearLayout

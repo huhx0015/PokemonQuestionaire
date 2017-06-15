@@ -15,7 +15,7 @@ public class Pokemon implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int mId;
 
     private String mItem;

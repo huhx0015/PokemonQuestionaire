@@ -2,14 +2,18 @@ package com.huhx0015.pokemonquestionaire.view.activities;
 
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import com.huhx0015.pokemonquestionaire.databinding.ActivityMainBinding;
@@ -21,10 +25,9 @@ import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFraqment;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
-import com.huhx0015.pokemonquestionaire.models.responses.PokemonResponse;
-import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
 
@@ -33,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     // DATA VARIABLES:
     private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private Pokemon mSelectedPokemon;
-    private PokemonResponse mPokemonResponse;
 
     // DATABINDING VARIABLES:
     private ActivityMainBinding mActivityMainBinding;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     // INSTANCE VARIABLES:
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
-    private static final String INSTANCE_POKEMONS = LOG_TAG + "_POKEMONS";
     private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
@@ -60,20 +61,22 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         initView();
 
-        if (savedInstanceState != null) {
-            mPokemonResponse = savedInstanceState.getParcelable(INSTANCE_POKEMONS);
-            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
-            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
-            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+//        if (savedInstanceState != null) {
+//            mPokemonResponse = savedInstanceState.getParcelable(INSTANCE_POKEMONS);
+//            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
+//            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
+//            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+//
+//            if (mSelectedPokemon != null) {
+//                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+//                        QuestionFraqment.class.getSimpleName());
+//                return;
+//            }
+//        }
 
-            if (mSelectedPokemon != null) {
-                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                        QuestionFraqment.class.getSimpleName());
-                return;
-            }
-        }
+        subscribe(); // Subscribes an observer on the mPokemonListData object in mViewModel.
 
-        loadJson();
+        mViewModel.loadData(this); // Loads the Pokemon question list data from a local JSON file.
     }
 
     @Override
@@ -95,9 +98,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (mPokemonResponse != null) {
-            outState.putParcelable(INSTANCE_POKEMONS, mPokemonResponse);
-        }
         if (mSelectedPokemon != null) {
             outState.putParcelable(INSTANCE_SELECTED_POKEMON, mSelectedPokemon);
         }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     @Override
     public void onTryAgainSelected(boolean isNewQuestion) {
         if (isNewQuestion) {
-            mSelectedPokemon = QuestionUtils.getRandomQuestion(mPokemonResponse.getQuestionList());
+            mSelectedPokemon = QuestionUtils.getRandomQuestion(mViewModel.getPokemonListData().getValue());
             mCorrectPosition = QuestionUtils.getRandomPosition();
         }
 
@@ -152,10 +152,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         setSupportActionBar(mActivityMainBinding.mainToolbar);
     }
 
-    private void loadJson() {
-        JsonAsyncTask task = new JsonAsyncTask();
-        task.execute(PokemonConstants.POKEMON_ASSET_NAME);
-    }
+    /** FRAGMENT METHODS _______________________________________________________________________ **/
 
     private void loadFragment(Fragment fragment, String tag) {
         this.mFragmentTag = tag;
@@ -166,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    /** SERVICE METHODS ________________________________________________________________________ **/
+
     private void startTimer(boolean isStart) {
         if (isStart) {
             startService(new Intent(this, TimerService.class));
@@ -174,45 +173,34 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         }
     }
 
-    /** SUBCLASSES _____________________________________________________________________________ **/
+    /** SUBSCRIBER METHODS _____________________________________________________________________ **/
 
-    private class JsonAsyncTask extends AsyncTask<String, Void, Pokemon> {
+    // TODO: New LiveData subscriber method.
+    private void subscribe() {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mContentMainBinding.mainProgressBar.setVisibility(View.VISIBLE);
-        }
+        // POKEMON LIST OBSERVER:
+        final Observer<List<Pokemon>> pokemonListObserver = new Observer<List<Pokemon>>() {
+            @Override
+            public void onChanged(@Nullable List<Pokemon> pokemon) {
+                Log.d(LOG_TAG, "subscribe(): mPokemonList data has changed.");
 
-        @Override
-        protected Pokemon doInBackground(String... params) {
-            String responseJson = JsonUtils.loadJsonFromAsset(PokemonConstants.POKEMON_ASSET_NAME, MainActivity.this);
-            PokemonResponse questionResponse = JsonUtils.getGroceryQuestionsFromJson(responseJson);
+                if (pokemon != null) {
 
-            if (questionResponse != null && questionResponse.getQuestionList() != null &&
-                    questionResponse.getQuestionList().size() > 0) {
-                mPokemonResponse = questionResponse;
-                return QuestionUtils.getRandomQuestion(questionResponse.getQuestionList());
+                    // TODO: Select a random pokemon question
+                    mSelectedPokemon = QuestionUtils.getRandomQuestion(pokemon);
+                    mCorrectPosition = QuestionUtils.getRandomPosition();
+                    loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
+                            MainActivity.this), QuestionFraqment.class.getSimpleName());
+                    startTimer(true);
+
+                } else {
+                    Toast.makeText(MainActivity.this, "An error occurred while attempting to load a pokemon.",
+                            Toast.LENGTH_LONG).show();
+                }
             }
+        };
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Pokemon pokemon) {
-            super.onPostExecute(pokemon);
-            mContentMainBinding.mainProgressBar.setVisibility(View.GONE);
-
-            if (pokemon == null) {
-                Toast.makeText(MainActivity.this, "An error occurred while attempting to load a pokemon.",
-                        Toast.LENGTH_LONG).show();
-            } else {
-                mSelectedPokemon = pokemon;
-                mCorrectPosition = QuestionUtils.getRandomPosition();
-                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
-                        MainActivity.this), QuestionFraqment.class.getSimpleName());
-                startTimer(true);
-            }
-        }
+        // Observes changes on mPokemonListData in mViewModel.
+        mViewModel.getPokemonListData().observe(this, pokemonListObserver);
     }
 }

@@ -23,7 +23,7 @@ public class PokemonResponse implements Parcelable {
 
     /** GET METHODS ____________________________________________________________________________ **/
 
-    public List<Pokemon> getQuestionList() {
+    public List<Pokemon> getPokemonList() {
         return mPokemonList;
     }
 
