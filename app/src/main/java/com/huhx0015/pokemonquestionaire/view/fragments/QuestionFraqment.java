@@ -19,7 +19,7 @@ import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
-import com.huhx0015.pokemonquestionaire.models.Pokemon;
+import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
 
@@ -144,7 +144,7 @@ public class QuestionFraqment extends LifecycleFragment {
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
-        mViewModel = new QuestionResultViewModel();
+        mViewModel = new QuestionResultViewModel(mPokemon, mSelectedPosition);
         mBinding.setViewModel(mViewModel);
     }
 

@@ -1,5 +1,7 @@
-package com.huhx0015.pokemonquestionaire.models;
+package com.huhx0015.pokemonquestionaire.models.entities;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.List;
@@ -8,21 +10,30 @@ import java.util.List;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
+@Entity(tableName = "pokemon")
 public class Pokemon implements Parcelable {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
+
+    @PrimaryKey
+    private int mId;
 
     private String mItem;
     private List<String> mUrlList;
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
-    public Pokemon(String item, List<String> urlList) {
+    public Pokemon(int id, String item, List<String> urlList) {
+        this.mId = id;
         this.mItem = item;
         this.mUrlList = urlList;
     }
 
     /** GET METHODS ____________________________________________________________________________ **/
+
+    public int getId() {
+        return mId;
+    }
 
     public String getItem() {
         return mItem;

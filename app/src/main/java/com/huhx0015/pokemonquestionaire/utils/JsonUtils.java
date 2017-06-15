@@ -5,8 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.models.PokemonJsonDeserializer;
-import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
+import com.huhx0015.pokemonquestionaire.models.responses.PokemonResponse;
 import java.io.IOException;
 import java.io.InputStream;
 

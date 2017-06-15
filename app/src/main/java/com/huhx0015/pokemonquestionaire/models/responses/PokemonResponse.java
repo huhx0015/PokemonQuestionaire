@@ -1,7 +1,8 @@
-package com.huhx0015.pokemonquestionaire.models;
+package com.huhx0015.pokemonquestionaire.models.responses;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import java.util.List;
 
 /**

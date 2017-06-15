@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.models;
+package com.huhx0015.pokemonquestionaire.utils;
 
 import android.util.Log;
 import com.google.gson.JsonArray;
@@ -7,6 +7,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
+import com.huhx0015.pokemonquestionaire.models.responses.PokemonResponse;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ public class PokemonJsonDeserializer implements JsonDeserializer<PokemonResponse
         JsonObject jsonObject = json.getAsJsonObject();
         List<Pokemon> pokemonList = null;
 
+        int pokemonCounter = 0;
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
 
             if (entry.getValue() instanceof JsonArray) {
@@ -48,7 +51,8 @@ public class PokemonJsonDeserializer implements JsonDeserializer<PokemonResponse
                 if (pokemonList == null) {
                     pokemonList = new ArrayList<>();
                 }
-                pokemonList.add(new Pokemon(itemName, urlList));
+                pokemonList.add(new Pokemon(pokemonCounter, itemName, urlList));
+                pokemonCounter++;
             }
         }
 
