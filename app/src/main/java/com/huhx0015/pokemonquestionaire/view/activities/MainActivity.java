@@ -3,18 +3,15 @@ package com.huhx0015.pokemonquestionaire.view.activities;
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.huhx0015.pokemonquestionaire.databinding.ActivityMainBinding;
 import com.huhx0015.pokemonquestionaire.databinding.ContentMainBinding;
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
@@ -28,9 +25,6 @@ import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
 
@@ -58,18 +52,12 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
-    // VIEW INJECTION VARIABLES:
-    @BindView(R.id.main_fragment_container) RelativeLayout mFragmentContainer;
-    @BindView(R.id.main_progress_bar) ProgressBar mProgressBar;
-    @BindView(R.id.main_toolbar) Toolbar mToolbar;
-
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
         initView();
 
         if (savedInstanceState != null) {
@@ -86,6 +74,13 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         }
 
         loadJson();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mContentMainBinding.unbind();
+        mActivityMainBinding.unbind();
     }
 
     /** ACTIVITY EXTENSION METHODS _____________________________________________________________ **/
@@ -140,7 +135,21 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     /** INIT METHODS ___________________________________________________________________________ **/
 
     private void initView() {
-        setSupportActionBar(mToolbar);
+        initBinding();
+        initToolbar();
+    }
+
+    private void initBinding() {
+        mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mContentMainBinding = mActivityMainBinding.contentMain;
+
+        mViewModel = new MainViewModel();
+        mActivityMainBinding.setViewModel(mViewModel);
+        mContentMainBinding.setViewModel(mViewModel);
+    }
+
+    private void initToolbar() {
+        setSupportActionBar(mActivityMainBinding.mainToolbar);
     }
 
     private void loadJson() {
@@ -153,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(mFragmentContainer.getId(), fragment);
+        fragmentTransaction.replace(mContentMainBinding.mainFragmentContainer.getId(), fragment);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
@@ -172,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            mProgressBar.setVisibility(View.VISIBLE);
+            mContentMainBinding.mainProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -192,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         @Override
         protected void onPostExecute(Pokemon pokemon) {
             super.onPostExecute(pokemon);
-            mProgressBar.setVisibility(View.GONE);
+            mContentMainBinding.mainProgressBar.setVisibility(View.GONE);
 
             if (pokemon == null) {
                 Toast.makeText(MainActivity.this, "An error occurred while attempting to load a pokemon.",
