@@ -1,7 +1,6 @@
 package com.huhx0015.pokemonquestionaire.contracts.activities;
 
 import android.arch.lifecycle.LiveData;
-
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 

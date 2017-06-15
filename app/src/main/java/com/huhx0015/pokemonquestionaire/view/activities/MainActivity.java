@@ -14,16 +14,21 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.huhx0015.pokemonquestionaire.databinding.ActivityMainBinding;
+import com.huhx0015.pokemonquestionaire.databinding.ContentMainBinding;
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.view.fragments.PokemonFraqment;
+import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFraqment;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
 import com.huhx0015.pokemonquestionaire.models.PokemonResponse;
 import com.huhx0015.pokemonquestionaire.utils.JsonUtils;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
+import com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,6 +40,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private Pokemon mSelectedPokemon;
     private PokemonResponse mPokemonResponse;
+
+    // DATABINDING VARIABLES:
+    private ActivityMainBinding mActivityMainBinding;
+    private ContentMainBinding mContentMainBinding;
+    private MainViewModel mViewModel;
 
     // FRAGMENT VARIABLES:
     private String mFragmentTag;
@@ -69,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
 
             if (mSelectedPokemon != null) {
-                loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                        PokemonFraqment.class.getSimpleName());
+                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                        QuestionFraqment.class.getSimpleName());
                 return;
             }
         }
@@ -122,8 +132,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
             mCorrectPosition = QuestionUtils.getRandomPosition();
         }
 
-        loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                PokemonFraqment.class.getSimpleName());
+        loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                QuestionFraqment.class.getSimpleName());
         startTimer(true);
     }
 
@@ -190,8 +200,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
             } else {
                 mSelectedPokemon = pokemon;
                 mCorrectPosition = QuestionUtils.getRandomPosition();
-                loadFragment(PokemonFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
-                        MainActivity.this), PokemonFraqment.class.getSimpleName());
+                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
+                        MainActivity.this), QuestionFraqment.class.getSimpleName());
                 startTimer(true);
             }
         }

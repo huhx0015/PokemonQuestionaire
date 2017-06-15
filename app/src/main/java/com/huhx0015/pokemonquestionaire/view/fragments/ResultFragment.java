@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.huhx0015.pokemonquestionaire.R;
+import com.huhx0015.pokemonquestionaire.databinding.FragmentResultBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -25,6 +28,10 @@ public class ResultFragment extends LifecycleFragment {
 
     // DATA VARIABLES:
     private boolean mIsCorrect;
+
+    // DATABINDING VARIABLES:
+    private FragmentResultBinding mBinding;
+    private QuestionResultViewModel mViewModel;
 
     // FRAGMENT VARIABLES:
     private MainActivityListener mListener;

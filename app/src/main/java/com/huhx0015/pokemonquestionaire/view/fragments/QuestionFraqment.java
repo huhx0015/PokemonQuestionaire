@@ -18,9 +18,12 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
+import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,7 +33,7 @@ import butterknife.Unbinder;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class PokemonFraqment extends LifecycleFragment {
+public class QuestionFraqment extends LifecycleFragment {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -47,12 +50,16 @@ public class PokemonFraqment extends LifecycleFragment {
     private int mSelectedPosition;
     private Pokemon mPokemon;
 
+    // DATABINDING VARIABLES:
+    private FragmentQuestionBinding mBinding;
+    private QuestionResultViewModel mViewModel;
+
     // FRAGMENT VARIABLES:
     private MainActivityListener mListener;
     private Unbinder mUnbinder;
 
     // LOGGING VARIABLES:
-    private static final String LOG_TAG = PokemonFraqment.class.getSimpleName();
+    private static final String LOG_TAG = QuestionFraqment.class.getSimpleName();
 
     // INSTANCE VARIABLES:
     private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
@@ -72,9 +79,9 @@ public class PokemonFraqment extends LifecycleFragment {
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
-    public static PokemonFraqment newInstance(Pokemon pokemon, int correctPosition,
-                                              MainActivityListener listener) {
-        PokemonFraqment fraqment = new PokemonFraqment();
+    public static QuestionFraqment newInstance(Pokemon pokemon, int correctPosition,
+                                               MainActivityListener listener) {
+        QuestionFraqment fraqment = new QuestionFraqment();
         fraqment.mPokemon = pokemon;
         fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
