@@ -18,6 +18,8 @@ public class TimerService extends Service {
 
     private CountDownTimer mTimer;
 
+    /** SERVICE METHODS ________________________________________________________________________ **/
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

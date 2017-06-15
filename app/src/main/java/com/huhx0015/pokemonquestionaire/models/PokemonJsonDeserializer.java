@@ -22,6 +22,8 @@ public class PokemonJsonDeserializer implements JsonDeserializer<PokemonResponse
 
     private static final String LOG_TAG = PokemonJsonDeserializer.class.getSimpleName();
 
+    /** DESERIALIZER METHODS ___________________________________________________________________ **/
+
     @Override
     public PokemonResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();

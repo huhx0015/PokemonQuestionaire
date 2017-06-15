@@ -34,25 +34,33 @@ public class PokemonFraqment extends LifecycleFragment {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    private static final String LOG_TAG = PokemonFraqment.class.getSimpleName();
-    private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
-    private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
-    private static final String INSTANCE_SELECTED_POSITION = LOG_TAG + "_INSTANCE_SELECTED_POSITION";
-    private static final String INSTANCE_TIME_UP = LOG_TAG + "_INSTANCE_TIME_UP";
-
+    // CONSTANT VARIABLES:
     private static final int CORRECT_ANSWER_IMAGE_POSITION = 0;
     private static final int POSITION_1 = 0;
     private static final int POSITION_2 = 1;
     private static final int POSITION_3 = 2;
     private static final int POSITION_4 = 3;
 
+    // DATA VARIABLES:
     private boolean mIsTimeUp = false;
     private int mCorrectPosition;
     private int mSelectedPosition;
-    private MainActivityListener mListener;
     private Pokemon mPokemon;
+
+    // FRAGMENT VARIABLES:
+    private MainActivityListener mListener;
     private Unbinder mUnbinder;
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = PokemonFraqment.class.getSimpleName();
+
+    // INSTANCE VARIABLES:
+    private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
+    private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
+    private static final String INSTANCE_SELECTED_POSITION = LOG_TAG + "_INSTANCE_SELECTED_POSITION";
+    private static final String INSTANCE_TIME_UP = LOG_TAG + "_INSTANCE_TIME_UP";
+
+    // VIEW INJECTION VARIABLES:
     @BindView(R.id.fragment_question_image_1) AppCompatImageView mQuestionImage1;
     @BindView(R.id.fragment_question_image_2) AppCompatImageView mQuestionImage2;
     @BindView(R.id.fragment_question_image_3) AppCompatImageView mQuestionImage3;
@@ -62,13 +70,18 @@ public class PokemonFraqment extends LifecycleFragment {
     @BindView(R.id.fragment_question_time_remaining) AppCompatTextView mTimeRemainingText;
     @BindView(R.id.fragment_question_submit_button) AppCompatButton mSubmitButton;
 
-    public static PokemonFraqment newInstance(Pokemon pokemon, int correctPosition, MainActivityListener listener) {
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
+
+    public static PokemonFraqment newInstance(Pokemon pokemon, int correctPosition,
+                                              MainActivityListener listener) {
         PokemonFraqment fraqment = new PokemonFraqment();
         fraqment.mPokemon = pokemon;
         fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
         return fraqment;
     }
+
+    /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,6 +135,8 @@ public class PokemonFraqment extends LifecycleFragment {
         mUnbinder.unbind();
     }
 
+    /** FRAGMENT EXTENSION METHODS _____________________________________________________________ **/
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -130,6 +145,8 @@ public class PokemonFraqment extends LifecycleFragment {
         outState.putInt(INSTANCE_SELECTED_POSITION, mSelectedPosition);
         outState.putBoolean(INSTANCE_TIME_UP, mIsTimeUp);
     }
+
+    /** VIEW METHODS ___________________________________________________________________________ **/
 
     private void initView() {
         initText();
@@ -249,6 +266,8 @@ public class PokemonFraqment extends LifecycleFragment {
             mListener.onTryAgainSelected(true);
         }
     }
+
+    /** BROADCAST METHODS ______________________________________________________________________ **/
 
     private BroadcastReceiver mTimerReceiver = new BroadcastReceiver() {
         @Override

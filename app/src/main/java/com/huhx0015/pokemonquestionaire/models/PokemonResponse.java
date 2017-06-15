@@ -14,16 +14,22 @@ public class PokemonResponse implements Parcelable {
 
     private List<Pokemon> mPokemonList;
 
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
+
     public PokemonResponse(List<Pokemon> pokemonList) {
         this.mPokemonList = pokemonList;
     }
 
-    protected PokemonResponse(Parcel in) {
-        mPokemonList = in.createTypedArrayList(Pokemon.CREATOR);
-    }
+    /** GET METHODS ____________________________________________________________________________ **/
 
     public List<Pokemon> getQuestionList() {
         return mPokemonList;
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
+
+    protected PokemonResponse(Parcel in) {
+        mPokemonList = in.createTypedArrayList(Pokemon.CREATOR);
     }
 
     public static final Creator<PokemonResponse> CREATOR = new Creator<PokemonResponse>() {

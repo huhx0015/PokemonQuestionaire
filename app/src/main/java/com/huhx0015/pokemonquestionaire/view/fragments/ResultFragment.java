@@ -23,14 +23,23 @@ public class ResultFragment extends LifecycleFragment {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    private static final String LOG_TAG = ResultFragment.class.getSimpleName();
-    private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_INSTANCE_IS_CORRECT";
-
+    // DATA VARIABLES:
     private boolean mIsCorrect;
+
+    // FRAGMENT VARIABLES:
     private MainActivityListener mListener;
     private Unbinder mUnbinder;
 
+    // LOGGING VARIABLES:
+    private static final String LOG_TAG = ResultFragment.class.getSimpleName();
+
+    // INSTANCE VARIABLES:
+    private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_INSTANCE_IS_CORRECT";
+
+    // VIEW INJECTION VARIABLES:
     @BindView(R.id.fragment_result_text) AppCompatTextView mResultText;
+
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
     public static ResultFragment newInstance(boolean isCorrect, MainActivityListener listener) {
         ResultFragment fragment = new ResultFragment();
@@ -38,6 +47,8 @@ public class ResultFragment extends LifecycleFragment {
         fragment.mListener = listener;
         return fragment;
     }
+
+    /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,11 +77,15 @@ public class ResultFragment extends LifecycleFragment {
         mUnbinder.unbind();
     }
 
+    /** FRAGMENT EXTENSION METHODS _____________________________________________________________ **/
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(INSTANCE_IS_CORRECT, mIsCorrect);
     }
+
+    /** VIEW METHODS ___________________________________________________________________________ **/
 
     private void initView() {
         mResultText.setText(mIsCorrect ? getString(R.string.result_correct) : getString(R.string.result_wrong));

@@ -15,6 +15,8 @@ public class QuestionUtils {
 
     private static final int NUMBER_OF_IMAGES = 4;
 
+    /** UTILITY METHODS ________________________________________________________________________ **/
+
     public static Pokemon getRandomQuestion(List<Pokemon> pokemonList) {
         Random random = new Random();
         int randomPosition = random.nextInt(pokemonList.size());

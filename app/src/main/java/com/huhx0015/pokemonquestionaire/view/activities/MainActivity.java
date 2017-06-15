@@ -31,21 +31,29 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // DATA VARIABLES:
+    private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
+    private Pokemon mSelectedPokemon;
+    private PokemonResponse mPokemonResponse;
+
+    // FRAGMENT VARIABLES:
+    private String mFragmentTag;
+
+    // LOGGING VARIABLES:
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+    // INSTANCE VARIABLES:
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
     private static final String INSTANCE_POKEMONS = LOG_TAG + "_POKEMONS";
     private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
 
-    private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
-    private String mFragmentTag;
-    private Pokemon mSelectedPokemon;
-    private PokemonResponse mPokemonResponse;
-
+    // VIEW INJECTION VARIABLES:
     @BindView(R.id.main_fragment_container) RelativeLayout mFragmentContainer;
     @BindView(R.id.main_progress_bar) ProgressBar mProgressBar;
     @BindView(R.id.main_toolbar) Toolbar mToolbar;
+
+    /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         loadJson();
     }
+
+    /** ACTIVITY EXTENSION METHODS _____________________________________________________________ **/
 
     @Override
     public void onBackPressed() {

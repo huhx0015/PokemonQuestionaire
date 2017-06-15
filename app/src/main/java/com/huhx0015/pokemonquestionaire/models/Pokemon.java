@@ -15,15 +15,14 @@ public class Pokemon implements Parcelable {
     private String mItem;
     private List<String> mUrlList;
 
+    /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
+
     public Pokemon(String item, List<String> urlList) {
         this.mItem = item;
         this.mUrlList = urlList;
     }
 
-    protected Pokemon(Parcel in) {
-        mItem = in.readString();
-        mUrlList = in.createStringArrayList();
-    }
+    /** GET METHODS ____________________________________________________________________________ **/
 
     public String getItem() {
         return mItem;
@@ -31,6 +30,13 @@ public class Pokemon implements Parcelable {
 
     public List<String> getUrlList() {
         return mUrlList;
+    }
+
+    /** PARCELABLE METHODS _____________________________________________________________________ **/
+
+    protected Pokemon(Parcel in) {
+        mItem = in.readString();
+        mUrlList = in.createStringArrayList();
     }
 
     public static final Creator<Pokemon> CREATOR = new Creator<Pokemon>() {

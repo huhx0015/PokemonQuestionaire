@@ -20,6 +20,8 @@ public class JsonUtils {
 
     private static final String LOG_TAG = JsonUtils.class.getSimpleName();
 
+    /** UTILITY METHODS ________________________________________________________________________ **/
+
     public static String loadJsonFromAsset(String fileName, Context context) {
         try {
             InputStream inputStream = context.getAssets().open(fileName);
