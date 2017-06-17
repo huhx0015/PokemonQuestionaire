@@ -97,7 +97,7 @@ public class QuestionFraqment extends LifecycleFragment {
         }
 
         if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
-            setCorrectAnswerPosition();
+            mCorrectPosition = QuestionUtils.getRandomPosition();
         }
 
         Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mCorrectPosition);
@@ -160,18 +160,18 @@ public class QuestionFraqment extends LifecycleFragment {
     }
 
     private void initText() {
-        mBinding.fragmentQuestionText.setText(mPokemon.getItem());
-        mBinding.fragmentQuestionInstructionText.setText(String.format(getString(R.string.questions_instructions), mPokemon.getItem()));
+        mViewModel.setQuestionText(mPokemon.getItem());
+        mViewModel.setInstructionsText(String.format(getString(R.string.questions_instructions), mPokemon.getItem()));
 
         if (mIsTimeUp) {
-            mBinding.fragmentQuestionTimeRemaining.setText(getString(R.string.questions_time_run_out));
+            mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
         }
     }
 
     private void initImages() {
 
         // Sets the correct answer image.
-        setImage(mPokemon.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION), mCorrectPosition);
+        mViewModel.setQuestionImage(mCorrectPosition, mPokemon.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION));
 
         // Sets the rest of the images.
         int imageCount = 1;
@@ -179,45 +179,12 @@ public class QuestionFraqment extends LifecycleFragment {
         int numberOfImages = mPokemon.getUrlList().size();
         while (imageCount < numberOfImages) {
             String url = mPokemon.getUrlList().get(imageCount);
+
             if (position != mCorrectPosition) {
-                setImage(url, position);
+                mViewModel.setQuestionImage(position, url);
                 imageCount++;
             }
             position++;
-        }
-    }
-
-    private void setImage(String imageUrl, int position) {
-        switch (position) {
-            case 0:
-                loadImage(imageUrl, mBinding.fragmentQuestionImage1);
-                break;
-            case 1:
-                loadImage(imageUrl, mBinding.fragmentQuestionImage2);
-                break;
-            case 2:
-                loadImage(imageUrl, mBinding.fragmentQuestionImage3);
-                break;
-            case 3:
-                loadImage(imageUrl, mBinding.fragmentQuestionImage4);
-                break;
-        }
-        Log.d(LOG_TAG, "setImage(): Image set at position: " + position);
-    }
-
-    private void loadImage(String imageUrl, AppCompatImageView imageView) {
-        Glide.with(getContext())
-                .load(imageUrl)
-                .into(imageView);
-    }
-
-    private void setCorrectAnswerPosition() {
-        this.mCorrectPosition = QuestionUtils.getRandomPosition();
-    }
-
-    private void setSubmitButtonVisible() {
-        if (mBinding.fragmentQuestionSubmitButton.getVisibility() == View.GONE) {
-            mBinding.fragmentQuestionSubmitButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -231,12 +198,12 @@ public class QuestionFraqment extends LifecycleFragment {
 
     private void checkTimeUp() {
         if (mIsTimeUp) {
-            mBinding.fragmentQuestionTimeRemaining.setText(getString(R.string.questions_time_run_out));
+            mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
 
-            if (mBinding.fragmentQuestionSubmitButton.getVisibility() == View.GONE) {
-                mBinding.fragmentQuestionSubmitButton.setVisibility(View.VISIBLE);
+            if (!mViewModel.getSubmitButtonVisible()) {
+                mViewModel.setSubmitButtonVisible(true);
             }
-            mBinding.fragmentQuestionSubmitButton.setText(getString(R.string.result_try_again));
+            mViewModel.setSubmitButtonText(getString(R.string.result_try_again));
         }
     }
 
@@ -282,7 +249,7 @@ public class QuestionFraqment extends LifecycleFragment {
 
             long timeRemaining = intent.getLongExtra(PokemonConstants.EVENT_TIMER_REMAINING, 0);
             if (timeRemaining != 0) {
-                mBinding.fragmentQuestionTimeRemaining.setText(String.format(getString(R.string.questions_seconds), timeRemaining));
+                mViewModel.setTimeRemainingText(String.format(getString(R.string.questions_seconds), timeRemaining));
             }
 
             mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);
