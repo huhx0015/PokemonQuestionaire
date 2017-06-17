@@ -22,6 +22,7 @@ import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
+import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
@@ -46,7 +47,7 @@ public class QuestionFraqment extends LifecycleFragment {
 
     // DATABINDING VARIABLES:
     private FragmentQuestionBinding mBinding;
-    private QuestionResultViewModel mViewModel;
+    private QuestionViewModel mViewModel;
 
     // FRAGMENT VARIABLES:
     private MainActivityListener mListener;
@@ -65,8 +66,12 @@ public class QuestionFraqment extends LifecycleFragment {
     public static QuestionFraqment newInstance(Pokemon pokemon, int correctPosition,
                                                MainActivityListener listener) {
         QuestionFraqment fraqment = new QuestionFraqment();
-        fraqment.mPokemon = pokemon;
-        fraqment.mCorrectPosition = correctPosition;
+        Bundle arguments = new Bundle();
+        arguments.putParcelable(INSTANCE_POKEMON, pokemon);
+        arguments.putInt(INSTANCE_CORRECT_POSITION, correctPosition);
+        fraqment.setArguments(arguments);
+        //fraqment.mPokemon = pokemon;
+        //fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
         return fraqment;
     }
@@ -83,6 +88,12 @@ public class QuestionFraqment extends LifecycleFragment {
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
+        }
+
+        // TODO: Handle bundle arguments here.
+        if (getArguments() != null) {
+            mPokemon = getArguments().getParcelable(INSTANCE_POKEMON);
+            mCorrectPosition = getArguments().getInt(INSTANCE_CORRECT_POSITION);
         }
 
         if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
@@ -144,7 +155,7 @@ public class QuestionFraqment extends LifecycleFragment {
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
-        mViewModel = new QuestionResultViewModel(mPokemon, mSelectedPosition);
+        mViewModel = new QuestionViewModel();
         mBinding.setViewModel(mViewModel);
     }
 

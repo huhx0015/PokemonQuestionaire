@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
-import android.databinding.ObservableInt;
+import android.databinding.ObservableField;
 import android.os.AsyncTask;
 import android.view.View;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
@@ -27,12 +27,8 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<List<Pokemon>> mPokemonListData;
 
     // OBSERVABLE VARIABLES:
-    public ObservableInt progressBarVisibility = new ObservableInt();
-    public ObservableInt errorTextVisiblity = new ObservableInt();
-
-    // VIEWMODEL VARIABLES:
-    private boolean mProgressBarVisible = false;
-    private boolean mErrorTextVisible = false;
+    public ObservableField<Integer> progressBarVisibility = new ObservableField<>();
+    public ObservableField<Integer> errorTextVisiblity = new ObservableField<>();
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
@@ -44,7 +40,25 @@ public class MainViewModel extends ViewModel {
     /** GET METHODS ____________________________________________________________________________ **/
 
     public boolean getProgressBarVisible() {
-        return mProgressBarVisible;
+        switch (progressBarVisibility.get()) {
+            case View.VISIBLE:
+                return true;
+            case View.GONE:
+                return false;
+            default:
+                return false;
+        }
+    }
+
+    public boolean getErrorTextVisible() {
+        switch(errorTextVisiblity.get()) {
+            case View.VISIBLE:
+                return true;
+            case View.GONE:
+                return false;
+            default:
+                return false;
+        }
     }
 
     /** OBSERVABLE METHODS _____________________________________________________________________ **/
@@ -52,20 +66,16 @@ public class MainViewModel extends ViewModel {
     public void setProgressBarVisible(boolean isVisible) {
         if (isVisible) {
             progressBarVisibility.set(View.VISIBLE);
-            mProgressBarVisible = true;
         } else {
             progressBarVisibility.set(View.GONE);
-            mProgressBarVisible = false;
         }
     }
 
     public void setErrorTextVisible(boolean isVisible) {
         if (isVisible) {
             errorTextVisiblity.set(View.VISIBLE);
-            mErrorTextVisible = true;
         } else {
             errorTextVisiblity.set(View.GONE);
-            mErrorTextVisible = false;
         }
     }
 
