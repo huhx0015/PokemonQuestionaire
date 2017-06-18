@@ -17,7 +17,7 @@ public class BindingUtils {
     public static void loadImage(AppCompatImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
-                .placeholder(R.drawable.leak_canary_icon)
+                .placeholder(R.mipmap.ic_launcher)
                 .into(view);
     }
 }

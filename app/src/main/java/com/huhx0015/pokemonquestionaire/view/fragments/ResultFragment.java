@@ -21,14 +21,11 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // DATA VARIABLES:
-    private boolean mIsCorrect;
+    private boolean mIsCorrect = false;
 
     // DATABINDING VARIABLES:
     private FragmentResultBinding mBinding;
     private ResultViewModel mViewModel;
-
-    // FRAGMENT VARIABLES:
-    private MainActivityListener mListener;
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = ResultFragment.class.getSimpleName();
@@ -52,7 +49,6 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);

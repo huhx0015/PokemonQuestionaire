@@ -68,7 +68,6 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mPokemon = savedInstanceState.getParcelable(INSTANCE_POKEMON);
