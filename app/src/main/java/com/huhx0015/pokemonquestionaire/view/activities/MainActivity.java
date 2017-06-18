@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     // FRAGMENT VARIABLES:
     private String mFragmentTag;
 
+    // LIFECYCLE VARIABLES:
+    private final LifecycleRegistry mRegistry = new LifecycleRegistry(this);
+
     // LOGGING VARIABLES:
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     @Override
     public LifecycleRegistry getLifecycle() {
-        return null;
+        return mRegistry;
     }
 
     /** LISTENER METHODS _______________________________________________________________________ **/

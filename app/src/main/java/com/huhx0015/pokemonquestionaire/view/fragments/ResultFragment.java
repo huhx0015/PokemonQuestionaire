@@ -1,6 +1,7 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentResultBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
+import com.huhx0015.pokemonquestionaire.viewmodels.fragments.ResultViewModel;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
@@ -26,7 +28,7 @@ public class ResultFragment extends LifecycleFragment {
 
     // DATABINDING VARIABLES:
     private FragmentResultBinding mBinding;
-    private QuestionResultViewModel mViewModel;
+    private ResultViewModel mViewModel;
 
     // FRAGMENT VARIABLES:
     private MainActivityListener mListener;
@@ -90,7 +92,7 @@ public class ResultFragment extends LifecycleFragment {
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_result, null, false);
-        mViewModel = new QuestionResultViewModel();
+        mViewModel = new ResultViewModel();
         mBinding.setViewModel(mViewModel);
     }
 

@@ -14,6 +14,15 @@ public class QuestionViewModel extends ViewModel {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // CONSTANT VARIABLES:
+    private static final int FIRST_QUESTION_ID = 0;
+    private static final int SECOND_QUESTION_ID = 1;
+    private static final int THIRD_QUESTION_ID = 2;
+    private static final int FOURTH_QUESTION_ID = 3;
+
+    // LISTENER VARIABLES:
+    private QuestionViewModelListener mListener;
+
     // OBSERVABLE VARIABLES:
     public ObservableField<Integer> submitButtonVisibility = new ObservableField<>();
     public ObservableField<String> questionText = new ObservableField<>();
@@ -30,6 +39,38 @@ public class QuestionViewModel extends ViewModel {
     public QuestionViewModel(Context context) {
         setSubmitButtonVisible(false);
         setSubmitButtonText(context.getString(R.string.question_submit));
+    }
+
+    /** CLICK LISTENER METHODS _________________________________________________________________ **/
+
+    public void onClickSubmitButton(View view) {
+        if (mListener != null) {
+            mListener.onSubmitButtonClicked();
+        }
+    }
+
+    public void onClickFirstQuestionImage(View view) {
+        if (mListener != null) {
+            mListener.onQuestionImageClicked(FIRST_QUESTION_ID);
+        }
+    }
+
+    public void onClickSecondQuestionImage(View view) {
+        if (mListener != null) {
+            mListener.onQuestionImageClicked(SECOND_QUESTION_ID);
+        }
+    }
+
+    public void onClickThirdQuestionImage(View view) {
+        if (mListener != null) {
+            mListener.onQuestionImageClicked(THIRD_QUESTION_ID);
+        }
+    }
+
+    public void onClickFourthQuestionImage(View view) {
+        if (mListener != null) {
+            mListener.onQuestionImageClicked(FOURTH_QUESTION_ID);
+        }
     }
 
     /** GET METHODS ____________________________________________________________________________ **/
@@ -64,6 +105,10 @@ public class QuestionViewModel extends ViewModel {
         }
     }
 
+    public void setListener(QuestionViewModelListener listener) {
+        this.mListener = listener;
+    }
+
     /** OBSERVABLE METHODS _____________________________________________________________________ **/
 
     public void setSubmitButtonVisible(boolean isVisible) {
@@ -90,19 +135,26 @@ public class QuestionViewModel extends ViewModel {
         timeRemainingText.set(text);
     }
 
-    public void setFirstQuestionImage(String url) {
+    private void setFirstQuestionImage(String url) {
         firstQuestionImage.set(url);
     }
 
-    public void setSecondQuestionImage(String url) {
+    private void setSecondQuestionImage(String url) {
         secondQuestionImage.set(url);
     }
 
-    public void setThirdQuestionImage(String url) {
+    private void setThirdQuestionImage(String url) {
         thirdQuestionImage.set(url);
     }
 
-    public void setFourthQuestionImage(String url) {
+    private void setFourthQuestionImage(String url) {
         fourthQuestionImage.set(url);
+    }
+
+    /** INTERFACE METHODS ______________________________________________________________________ **/
+
+    public interface QuestionViewModelListener {
+        void onSubmitButtonClicked();
+        void onQuestionImageClicked(int position);
     }
 }

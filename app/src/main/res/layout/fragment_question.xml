@@ -95,6 +95,7 @@
                             android:layout_height="@dimen/grocery_item_dimen"
                             android:layout_marginEnd="@dimen/grocery_item_side_margin"
                             android:layout_marginStart="@dimen/grocery_item_side_margin"
+                            android:onClick="@{viewModel.onClickFirstQuestionImage}"
                             app:imageUrl="@{viewModel.firstQuestionImage}"/>
 
                         <android.support.v7.widget.AppCompatImageView
@@ -103,6 +104,7 @@
                             android:layout_height="@dimen/grocery_item_dimen"
                             android:layout_marginEnd="@dimen/grocery_item_side_margin"
                             android:layout_marginStart="@dimen/grocery_item_side_margin"
+                            android:onClick="@{viewModel.onClickSecondQuestionImage}"
                             app:imageUrl="@{viewModel.secondQuestionImage}"/>
 
                         <android.support.v7.widget.AppCompatImageView
@@ -111,6 +113,7 @@
                             android:layout_height="@dimen/grocery_item_dimen"
                             android:layout_marginEnd="@dimen/grocery_item_side_margin"
                             android:layout_marginStart="@dimen/grocery_item_side_margin"
+                            android:onClick="@{viewModel.onClickThirdQuestionImage}"
                             app:imageUrl="@{viewModel.thirdQuestionImage}"/>
 
                         <android.support.v7.widget.AppCompatImageView
@@ -119,6 +122,7 @@
                             android:layout_height="@dimen/grocery_item_dimen"
                             android:layout_marginEnd="@dimen/grocery_item_side_margin"
                             android:layout_marginStart="@dimen/grocery_item_side_margin"
+                            android:onClick="@{viewModel.onClickFourthQuestionImage}"
                             app:imageUrl="@{viewModel.fourthQuestionImage}"/>
 
                     </LinearLayout>
@@ -171,7 +175,8 @@
                     android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:text="@{viewModel.submitButtonText}"
-                    android:visibility="@{viewModel.submitButtonVisibility}"/>
+                    android:visibility="@{viewModel.submitButtonVisibility}"
+                    android:onClick="@{viewModel.onClickSubmitButton}"/>
 
             </LinearLayout>
 

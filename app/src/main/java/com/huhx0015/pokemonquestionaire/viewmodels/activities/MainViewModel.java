@@ -24,11 +24,11 @@ public class MainViewModel extends ViewModel {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // LIVE DATA VARIABLES:
-    private MutableLiveData<List<Pokemon>> mPokemonListData;
+    private MutableLiveData<List<Pokemon>> mPokemonListData = new MutableLiveData<>();;
 
     // OBSERVABLE VARIABLES:
     public ObservableField<Integer> progressBarVisibility = new ObservableField<>();
-    public ObservableField<Integer> errorTextVisiblity = new ObservableField<>();
+    public ObservableField<Integer> errorTextVisibility = new ObservableField<>();
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
@@ -51,7 +51,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public boolean getErrorTextVisible() {
-        switch(errorTextVisiblity.get()) {
+        switch(errorTextVisibility.get()) {
             case View.VISIBLE:
                 return true;
             case View.GONE:
@@ -73,9 +73,9 @@ public class MainViewModel extends ViewModel {
 
     public void setErrorTextVisible(boolean isVisible) {
         if (isVisible) {
-            errorTextVisiblity.set(View.VISIBLE);
+            errorTextVisibility.set(View.VISIBLE);
         } else {
-            errorTextVisiblity.set(View.GONE);
+            errorTextVisibility.set(View.GONE);
         }
     }
 

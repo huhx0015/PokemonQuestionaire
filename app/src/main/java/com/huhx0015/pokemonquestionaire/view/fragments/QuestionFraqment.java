@@ -1,6 +1,7 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,14 +21,13 @@ import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
-import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class QuestionFraqment extends LifecycleFragment {
+public class QuestionFraqment extends LifecycleFragment implements QuestionViewModel.QuestionViewModelListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -96,9 +95,9 @@ public class QuestionFraqment extends LifecycleFragment {
             mCorrectPosition = getArguments().getInt(INSTANCE_CORRECT_POSITION);
         }
 
-        if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
-            mCorrectPosition = QuestionUtils.getRandomPosition();
-        }
+//        if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
+//            mCorrectPosition = QuestionUtils.getRandomPosition();
+//        }
 
         Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mCorrectPosition);
     }
@@ -155,7 +154,8 @@ public class QuestionFraqment extends LifecycleFragment {
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
-        mViewModel = new QuestionViewModel();
+        mViewModel = new QuestionViewModel(getContext());
+        mViewModel.setListener(this);
         mBinding.setViewModel(mViewModel);
     }
 
@@ -207,39 +207,6 @@ public class QuestionFraqment extends LifecycleFragment {
         }
     }
 
-//    @OnClick(R.id.fragment_question_image_1)
-//    public void onQuestionImage1Clicked() {
-//        mSelectedPosition = POSITION_1;
-//        setSubmitButtonVisible();
-//    }
-//
-//    @OnClick(R.id.fragment_question_image_2)
-//    public void onQuestionImage2Clicked() {
-//        mSelectedPosition = POSITION_2;
-//        setSubmitButtonVisible();
-//    }
-//
-//    @OnClick(R.id.fragment_question_image_3)
-//    public void onQuestionImage3Clicked() {
-//        mSelectedPosition = POSITION_3;
-//        setSubmitButtonVisible();
-//    }
-//
-//    @OnClick(R.id.fragment_question_image_4)
-//    public void onQuestionImage4Clicked() {
-//        mSelectedPosition = POSITION_4;
-//        setSubmitButtonVisible();
-//    }
-//
-//    @OnClick(R.id.fragment_question_submit_button)
-//    public void onSubmitClicked() {
-//        if (!mIsTimeUp) {
-//            checkAnswer(mSelectedPosition);
-//        } else {
-//            mListener.onTryAgainSelected(true);
-//        }
-//    }
-
     /** BROADCAST METHODS ______________________________________________________________________ **/
 
     private BroadcastReceiver mTimerReceiver = new BroadcastReceiver() {
@@ -256,4 +223,21 @@ public class QuestionFraqment extends LifecycleFragment {
             checkTimeUp();
         }
     };
+
+    /** LISTENER METHODS _______________________________________________________________________ **/
+
+    @Override
+    public void onSubmitButtonClicked() {
+        if (!mIsTimeUp) {
+            checkAnswer(mSelectedPosition);
+        } else {
+            mListener.onTryAgainSelected(true);
+        }
+    }
+
+    @Override
+    public void onQuestionImageClicked(int position) {
+        mSelectedPosition = position;
+        mViewModel.setSubmitButtonVisible(true);
+    }
 }
