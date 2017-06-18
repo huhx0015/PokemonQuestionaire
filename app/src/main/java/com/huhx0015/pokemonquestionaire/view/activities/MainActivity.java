@@ -20,6 +20,7 @@ import com.huhx0015.pokemonquestionaire.databinding.ContentMainBinding;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.utils.SnackbarUtils;
+import com.huhx0015.pokemonquestionaire.view.fragments.BaseFragment;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFragment;
@@ -79,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
                 mViewModel.setPokemonList(pokemonList);
 
                 if (mSelectedPokemon != null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(mFragmentTag);
+
+                    if (fragment != null) {
+                        Log.d(LOG_TAG, "onCreate(): Loading previous fragment: " + mFragmentTag);
+
+                        fragment.setListener(this);
+                        loadFragment(fragment, mFragmentTag);
+                    }
                     return;
                 }
             }
@@ -175,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(mContentMainBinding.mainFragmentContainer.getId(), fragment);
+        fragmentTransaction.replace(mContentMainBinding.mainFragmentContainer.getId(), fragment, mFragmentTag);
         fragmentTransaction.commitAllowingStateLoss();
     }
 

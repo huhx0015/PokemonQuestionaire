@@ -1,6 +1,5 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
-import android.arch.lifecycle.LifecycleFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,7 @@ import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class QuestionFragment extends LifecycleFragment implements QuestionViewModel.QuestionViewModelListener {
+public class QuestionFragment extends BaseFragment implements QuestionViewModel.QuestionViewModelListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -41,9 +40,6 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
     // DATABINDING VARIABLES:
     private FragmentQuestionBinding mBinding;
     private QuestionViewModel mViewModel;
-
-    // FRAGMENT VARIABLES:
-    private MainActivityListener mListener;
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = QuestionFragment.class.getSimpleName();
@@ -72,7 +68,7 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mPokemon = savedInstanceState.getParcelable(INSTANCE_POKEMON);
@@ -205,9 +201,6 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
             if (isVisible()) {
                 if (timeRemaining != 0) {
                     mViewModel.setTimeRemainingText(String.format(getString(R.string.questions_seconds), timeRemaining));
-                } else {
-                    //mIsTimeUp = true;
-                    //mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
                 }
             }
 

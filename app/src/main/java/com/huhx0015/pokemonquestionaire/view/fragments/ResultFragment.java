@@ -1,6 +1,5 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
-import android.arch.lifecycle.LifecycleFragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +16,7 @@ import com.huhx0015.pokemonquestionaire.viewmodels.fragments.ResultViewModel;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class ResultFragment extends LifecycleFragment implements ResultViewModel.ResultViewModelListener {
+public class ResultFragment extends BaseFragment implements ResultViewModel.ResultViewModelListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -53,7 +52,7 @@ public class ResultFragment extends LifecycleFragment implements ResultViewModel
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        //setRetainInstance(true);
 
         if (savedInstanceState != null) {
             mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);
