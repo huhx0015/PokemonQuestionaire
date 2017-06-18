@@ -34,7 +34,7 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     // DATA VARIABLES:
     private boolean mIsTimeUp = false;
     private int mCorrectPosition;
-    private int mSelectedPosition;
+    private int mSelectedPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private Pokemon mPokemon;
 
     // DATABINDING VARIABLES:
@@ -94,7 +94,7 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerReceiver,
                 new IntentFilter(PokemonConstants.BROADCAST_TIMER));
         super.onResume();
-        checkTimeUp();
+        checkQuizState();
     }
 
     @Override
@@ -178,14 +178,17 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
         }
     }
 
-    private void checkTimeUp() {
+    private void checkQuizState() {
 
-        Log.d(LOG_TAG, "checkTimeUp(): mIsTimeUp: " + mIsTimeUp);
+        Log.d(LOG_TAG, "checkQuizState(): mIsTimeUp: " + mIsTimeUp);
 
         if (mIsTimeUp) {
             mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
             mViewModel.setSubmitButtonVisible(true);
             mViewModel.setSubmitButtonText(getString(R.string.result_try_again));
+        } else if (mSelectedPosition != PokemonConstants.STATE_CORRECT_POSITION_UNSET){
+            mViewModel.setSubmitButtonVisible(true);
+            mViewModel.setSubmitButtonText(getString(R.string.question_submit));
         }
     }
 
@@ -206,7 +209,7 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
             mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);
             Log.d(LOG_TAG, "mTimerReceiver: mIsTimeUp: " + mIsTimeUp);
 
-            checkTimeUp();
+            checkQuizState();
         }
     };
 

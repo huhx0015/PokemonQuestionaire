@@ -7,7 +7,9 @@ DEVELOPER: huhx0015
 
 ## Description
 
-Pokémon Questionaire: A basic Android application that asks users to identify the correct Pokemon in a given amount of time. This app serves as a simple showcase for the Android Architecture Components library, along with MVVM architecture and databinding.
+Pokémon Questionaire: A basic Android application that asks users to identify the correct Pokemon in a given amount of time.
+
+This app serves as a simple showcase for the Android Architecture Components library, along with MVVM architecture and databinding.
 
 ## Resources
 
@@ -26,6 +28,6 @@ Pokémon Questionaire: A basic Android application that asks users to identify t
 
 POKEMON QUESTIONAIRE is a fan application and is not associated with or endorsed by the Pokémon Company International.
 
-© POKEMON QUESTIONAIRE is a registered trademark of the Pokémon Company International.
+© POKEMON is a registered trademark of the Pokémon Company International.
 
 All POKEMON images, logos, names, and related media are intellectual properties of the Pokémon Company International unless otherwise noted.
