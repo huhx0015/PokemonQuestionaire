@@ -1,7 +1,6 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +19,6 @@ import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
-import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
 
 /**
@@ -33,10 +31,6 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
 
     // CONSTANT VARIABLES:
     private static final int CORRECT_ANSWER_IMAGE_POSITION = 0;
-    private static final int POSITION_1 = 0;
-    private static final int POSITION_2 = 1;
-    private static final int POSITION_3 = 2;
-    private static final int POSITION_4 = 3;
 
     // DATA VARIABLES:
     private boolean mIsTimeUp = false;
@@ -69,8 +63,6 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
         arguments.putParcelable(INSTANCE_POKEMON, pokemon);
         arguments.putInt(INSTANCE_CORRECT_POSITION, correctPosition);
         fraqment.setArguments(arguments);
-        //fraqment.mPokemon = pokemon;
-        //fraqment.mCorrectPosition = correctPosition;
         fraqment.mListener = listener;
         return fraqment;
     }
@@ -87,17 +79,10 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
-        }
-
-        // TODO: Handle bundle arguments here.
-        if (getArguments() != null) {
+        } else if (getArguments() != null) {
             mPokemon = getArguments().getParcelable(INSTANCE_POKEMON);
             mCorrectPosition = getArguments().getInt(INSTANCE_CORRECT_POSITION);
         }
-
-//        if (mCorrectPosition == PokemonConstants.STATE_CORRECT_POSITION_UNSET) {
-//            mCorrectPosition = QuestionUtils.getRandomPosition();
-//        }
 
         Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mCorrectPosition);
     }
@@ -187,6 +172,8 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
             position++;
         }
     }
+
+    /** QUESTION METHODS _______________________________________________________________________ **/
 
     private void checkAnswer(int position) {
         if (position == mCorrectPosition) {
