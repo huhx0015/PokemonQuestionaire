@@ -14,6 +14,14 @@ public class BaseFragment extends LifecycleFragment {
     // FRAGMENT VARIABLES:
     protected MainActivityListener mListener;
 
+    /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mListener = null;
+    }
+
     /** SET METHODS ____________________________________________________________________________ **/
 
     public void setListener(MainActivityListener listener) {
