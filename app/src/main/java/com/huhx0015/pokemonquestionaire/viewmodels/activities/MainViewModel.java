@@ -61,9 +61,15 @@ public class MainViewModel extends ViewModel {
         }
     }
 
+    /** SET METHODS ____________________________________________________________________________ **/
+
+    public void setPokemonList(List<Pokemon> list) {
+        mPokemonListData.setValue(list);
+    }
+
     /** OBSERVABLE METHODS _____________________________________________________________________ **/
 
-    public void setProgressBarVisible(boolean isVisible) {
+    private void setProgressBarVisible(boolean isVisible) {
         if (isVisible) {
             progressBarVisibility.set(View.VISIBLE);
         } else {
@@ -71,7 +77,7 @@ public class MainViewModel extends ViewModel {
         }
     }
 
-    public void setErrorTextVisible(boolean isVisible) {
+    private void setErrorTextVisible(boolean isVisible) {
         if (isVisible) {
             errorTextVisibility.set(View.VISIBLE);
         } else {

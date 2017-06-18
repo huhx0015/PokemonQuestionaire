@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
 import com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // DATA VARIABLES:
+    private boolean mIsCorrect = false;
     private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
     private Pokemon mSelectedPokemon;
 
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
     private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
+    private static final String INSTANCE_POKEMON_LIST = LOG_TAG + "_POKEMON_LIST";
+    private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_IS_CORRECT";
 
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
@@ -67,11 +72,15 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
             mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
             mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+            mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);
 
-            if (mSelectedPokemon != null) {
-                loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                        QuestionFragment.class.getSimpleName());
-                return;
+            List<Pokemon> pokemonList = savedInstanceState.getParcelableArrayList(INSTANCE_POKEMON_LIST);
+            if (pokemonList != null && pokemonList.size() > 0) {
+                mViewModel.setPokemonList(pokemonList);
+
+                if (mSelectedPokemon != null) {
+                    return;
+                }
             }
         }
 
@@ -101,8 +110,14 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         if (mSelectedPokemon != null) {
             outState.putParcelable(INSTANCE_SELECTED_POKEMON, mSelectedPokemon);
         }
+
+        if (mViewModel.getPokemonListData() != null && mViewModel.getPokemonListData().getValue() != null) {
+            outState.putParcelableArrayList(INSTANCE_POKEMON_LIST, new ArrayList<Parcelable>(mViewModel.getPokemonListData().getValue()));
+        }
+
         outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
         outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
+        outState.putBoolean(INSTANCE_IS_CORRECT, mIsCorrect);
     }
 
     /** LIFECYCLE OWNER METHODS ________________________________________________________________ **/
@@ -116,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     @Override
     public void onAnswerSelected(boolean isCorrect) {
+        mIsCorrect = isCorrect;
         loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
         startTimer(false);
     }

@@ -78,7 +78,7 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
             mPokemon = savedInstanceState.getParcelable(INSTANCE_POKEMON);
             mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
             mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
-            mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP, false);
+            mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP);
         } else if (getArguments() != null) {
             mPokemon = getArguments().getParcelable(INSTANCE_POKEMON);
             mCorrectPosition = getArguments().getInt(INSTANCE_CORRECT_POSITION);
@@ -184,12 +184,12 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
     }
 
     private void checkTimeUp() {
+
+        Log.d(LOG_TAG, "checkTimeUp(): mIsTimeUp: " + mIsTimeUp);
+
         if (mIsTimeUp) {
             mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
-
-            if (!mViewModel.getSubmitButtonVisible()) {
-                mViewModel.setSubmitButtonVisible(true);
-            }
+            mViewModel.setSubmitButtonVisible(true);
             mViewModel.setSubmitButtonText(getString(R.string.result_try_again));
         }
     }
@@ -206,11 +206,14 @@ public class QuestionFragment extends LifecycleFragment implements QuestionViewM
                 if (timeRemaining != 0) {
                     mViewModel.setTimeRemainingText(String.format(getString(R.string.questions_seconds), timeRemaining));
                 } else {
-                    mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
+                    //mIsTimeUp = true;
+                    //mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
                 }
             }
 
             mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);
+            Log.d(LOG_TAG, "mTimerReceiver: mIsTimeUp: " + mIsTimeUp);
+
             checkTimeUp();
         }
     };
