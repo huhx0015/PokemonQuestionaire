@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.instacartchallenges;
+package com.huhx0015.pokemonquestionaire;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.huhx0015.instacartchallenge.instacartchallenges", appContext.getPackageName());
+        assertEquals("com.huhx0015.pokemonquestionaire", appContext.getPackageName());
     }
 }

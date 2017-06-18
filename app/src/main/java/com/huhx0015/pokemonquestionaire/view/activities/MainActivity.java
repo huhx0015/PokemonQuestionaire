@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
                 } else {
                     SnackbarUtils.displaySnackbar(mActivityMainBinding.getRoot(),
-                            "An error occurred while attempting to load a pokemon.",
+                            getString(R.string.data_load_error),
                             Snackbar.LENGTH_LONG, ContextCompat.getColor(MainActivity.this, R.color.colorAccent));
                 }
             }

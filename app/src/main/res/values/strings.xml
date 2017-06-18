@@ -1,7 +1,12 @@
 <resources>
 
+    <!--APPLICATION STRINGS-->
     <string name="app_name">Pokémon Questionnaire</string>
 
+    <!--MAIN ACTIVITY STRINGS-->
+    <string name="data_load_error">An error occurred while attempting to load a pokemon.</string>
+
+    <!--QUESTION STRINGS-->
     <string name="questions_title">Who\'s that Pokémon?</string>
     <string name="questions_instructions">Tap on the Pokémon image that corresponds with %1$s.</string>
     <string name="questions_time_remaining">Time Remaining:</string>
@@ -9,6 +14,7 @@
     <string name="questions_time_run_out">Time\'s Up!</string>
     <string name="question_submit">Submit</string>
 
+    <!--RESULT STRINGS-->
     <string name="result_title">Your Answer Is:</string>
     <string name="result_correct">CORRECT!</string>
     <string name="result_wrong">INCORRECT!</string>

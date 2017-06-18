@@ -8,11 +8,14 @@ public class PokemonConstants {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // JSON VARIABLES:
     public static final String POKEMON_ASSET_NAME = "pokemon.json";
     public static final String TYPE_ENCODING_UTF8 = "UTF-8";
 
+    // POSITION VARIABLES:
     public static final int STATE_CORRECT_POSITION_UNSET = -1;
 
+    // TIMER VARIABLES:
     public static final String BROADCAST_TIMER = "BROADCAST_TIMER";
     public static final String EVENT_TIMER_REMAINING = "TIMER_REMAINING";
     public static final String EVENT_TIMER_FINISHED = "TIMER_FINISHED";
