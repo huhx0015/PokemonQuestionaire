@@ -1,15 +1,11 @@
 <resources>
 
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
     <dimen name="fragment_padding">16dp</dimen>
 
-    <dimen name="grocery_margin">8dp</dimen>
-    <dimen name="grocery_item_dimen">64dp</dimen>
-    <dimen name="grocery_item_side_margin">8dp</dimen>
+    <dimen name="question_margin">8dp</dimen>
+    <dimen name="question_item_dimen">64dp</dimen>
+    <dimen name="question_item_side_margin">8dp</dimen>
 
-    <dimen name="result_try_again_button_margin">32dp</dimen>
+    <dimen name="result_try_again_button_margin">24dp</dimen>
 
 </resources>

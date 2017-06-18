@@ -1,7 +1,6 @@
 package com.huhx0015.pokemonquestionaire.utils;
 
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
-
 import java.util.List;
 import java.util.Random;
 

@@ -25,7 +25,7 @@ import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class QuestionFraqment extends LifecycleFragment implements QuestionViewModel.QuestionViewModelListener {
+public class QuestionFragment extends LifecycleFragment implements QuestionViewModel.QuestionViewModelListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -46,7 +46,7 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
     private MainActivityListener mListener;
 
     // LOGGING VARIABLES:
-    private static final String LOG_TAG = QuestionFraqment.class.getSimpleName();
+    private static final String LOG_TAG = QuestionFragment.class.getSimpleName();
 
     // INSTANCE VARIABLES:
     private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
@@ -56,15 +56,15 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
-    public static QuestionFraqment newInstance(Pokemon pokemon, int correctPosition,
+    public static QuestionFragment newInstance(Pokemon pokemon, int correctPosition,
                                                MainActivityListener listener) {
-        QuestionFraqment fraqment = new QuestionFraqment();
+        QuestionFragment fragment = new QuestionFragment();
         Bundle arguments = new Bundle();
         arguments.putParcelable(INSTANCE_POKEMON, pokemon);
         arguments.putInt(INSTANCE_CORRECT_POSITION, correctPosition);
-        fraqment.setArguments(arguments);
-        fraqment.mListener = listener;
-        return fraqment;
+        fragment.setArguments(arguments);
+        fragment.mListener = listener;
+        return fragment;
     }
 
     /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
@@ -202,8 +202,12 @@ public class QuestionFraqment extends LifecycleFragment implements QuestionViewM
             Log.d(LOG_TAG, "mTimerReceiver: Received update from TimerService.");
 
             long timeRemaining = intent.getLongExtra(PokemonConstants.EVENT_TIMER_REMAINING, 0);
-            if (timeRemaining != 0) {
-                mViewModel.setTimeRemainingText(String.format(getString(R.string.questions_seconds), timeRemaining));
+            if (isVisible()) {
+                if (timeRemaining != 0) {
+                    mViewModel.setTimeRemainingText(String.format(getString(R.string.questions_seconds), timeRemaining));
+                } else {
+                    mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
+                }
             }
 
             mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);

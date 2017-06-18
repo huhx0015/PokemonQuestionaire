@@ -1,11 +1,11 @@
 package com.huhx0015.pokemonquestionaire.utils;
 
+import android.support.design.widget.Snackbar;
+import android.view.View;
+
 /**
  * Created by Michael Yoon Huh on 6/15/2017.
  */
-
-import android.support.design.widget.Snackbar;
-import android.view.View;
 
 public class SnackbarUtils {
 

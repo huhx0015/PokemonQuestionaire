@@ -1,7 +1,6 @@
 package com.huhx0015.pokemonquestionaire.view.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,14 +11,13 @@ import android.view.ViewGroup;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentResultBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
-import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionResultViewModel;
 import com.huhx0015.pokemonquestionaire.viewmodels.fragments.ResultViewModel;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
  */
 
-public class ResultFragment extends LifecycleFragment {
+public class ResultFragment extends LifecycleFragment implements ResultViewModel.ResultViewModelListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
@@ -43,7 +41,9 @@ public class ResultFragment extends LifecycleFragment {
 
     public static ResultFragment newInstance(boolean isCorrect, MainActivityListener listener) {
         ResultFragment fragment = new ResultFragment();
-        fragment.mIsCorrect = isCorrect;
+        Bundle arguments = new Bundle();
+        arguments.putBoolean(INSTANCE_IS_CORRECT, isCorrect);
+        fragment.setArguments(arguments);
         fragment.mListener = listener;
         return fragment;
     }
@@ -57,6 +57,8 @@ public class ResultFragment extends LifecycleFragment {
 
         if (savedInstanceState != null) {
             mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);
+        } else if (getArguments() != null) {
+            mIsCorrect = getArguments().getBoolean(INSTANCE_IS_CORRECT, false);
         }
 
         Log.d(LOG_TAG, "onCreate(): Answer Result is: " + mIsCorrect);
@@ -93,15 +95,18 @@ public class ResultFragment extends LifecycleFragment {
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_result, null, false);
         mViewModel = new ResultViewModel();
+        mViewModel.setListener(this);
         mBinding.setViewModel(mViewModel);
     }
 
     private void initText() {
-        mBinding.fragmentResultText.setText(mIsCorrect ? getString(R.string.result_correct) : getString(R.string.result_wrong));
+        mViewModel.setResultText(mIsCorrect ? getString(R.string.result_correct) : getString(R.string.result_wrong));
     }
 
-//    @OnClick(R.id.fragment_result_try_again_button)
-//    public void onTryAgainClicked() {
-//        mListener.onTryAgainSelected(mIsCorrect);
-//    }
+    /** LISTENER METHODS _______________________________________________________________________ **/
+
+    @Override
+    public void onTryAgainButtonClicked() {
+        mListener.onTryAgainSelected(mIsCorrect);
+    }
 }

@@ -21,7 +21,7 @@ import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.utils.SnackbarUtils;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFraqment;
+import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFragment;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
@@ -63,21 +63,19 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         initView();
 
-//        if (savedInstanceState != null) {
-//            mPokemonResponse = savedInstanceState.getParcelable(INSTANCE_POKEMONS);
-//            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
-//            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
-//            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
-//
-//            if (mSelectedPokemon != null) {
-//                loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-//                        QuestionFraqment.class.getSimpleName());
-//                return;
-//            }
-//        }
+        if (savedInstanceState != null) {
+            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
+            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
+            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
+
+            if (mSelectedPokemon != null) {
+                loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                        QuestionFragment.class.getSimpleName());
+                return;
+            }
+        }
 
         subscribe(); // Subscribes an observer on the mPokemonListData object in mViewModel.
-
         mViewModel.loadData(this); // Loads the Pokemon question list data from a local JSON file.
     }
 
@@ -129,8 +127,8 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
             mCorrectPosition = QuestionUtils.getRandomPosition();
         }
 
-        loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition, this),
-                QuestionFraqment.class.getSimpleName());
+        loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+                QuestionFragment.class.getSimpleName());
         startTimer(true);
     }
 
@@ -177,7 +175,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     /** SUBSCRIBER METHODS _____________________________________________________________________ **/
 
-    // TODO: New LiveData subscriber method.
     private void subscribe() {
 
         // POKEMON LIST OBSERVER:
@@ -187,12 +184,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
                 Log.d(LOG_TAG, "subscribe(): mPokemonList data has changed.");
 
                 if (pokemon != null) {
-
-                    // TODO: Select a random pokemon question
                     mSelectedPokemon = QuestionUtils.getRandomQuestion(pokemon);
                     mCorrectPosition = QuestionUtils.getRandomPosition();
-                    loadFragment(QuestionFraqment.newInstance(mSelectedPokemon, mCorrectPosition,
-                            MainActivity.this), QuestionFraqment.class.getSimpleName());
+
+                    loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition,
+                            MainActivity.this), QuestionFragment.class.getSimpleName());
                     startTimer(true);
 
                 } else {
