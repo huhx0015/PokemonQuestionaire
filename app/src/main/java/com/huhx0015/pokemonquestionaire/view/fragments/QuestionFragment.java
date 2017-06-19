@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.data.PokemonPreferences;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
 import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
@@ -179,6 +180,14 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     }
 
     private void checkQuizState() {
+
+        // Used for determining if the timer ran out while the app was inactive.
+        boolean isTimeUp = PokemonPreferences.getTimeUp(getContext());
+        if (isTimeUp) {
+            Log.d(LOG_TAG, "checkQuizState(): Time up was set in preferences.");
+            mIsTimeUp = true;
+            PokemonPreferences.clearPreferences(getContext());
+        }
 
         Log.d(LOG_TAG, "checkQuizState(): mIsTimeUp: " + mIsTimeUp);
 

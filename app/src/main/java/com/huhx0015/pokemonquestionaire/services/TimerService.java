@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
+import com.huhx0015.pokemonquestionaire.data.PokemonPreferences;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.
@@ -42,6 +43,8 @@ public class TimerService extends Service {
                 Intent intent = new Intent(PokemonConstants.BROADCAST_TIMER);
                 intent.putExtra(PokemonConstants.EVENT_TIMER_FINISHED, true);
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
+                PokemonPreferences.setTimeUp(true, getApplicationContext());
             }
 
         }.start();
