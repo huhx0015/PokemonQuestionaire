@@ -32,11 +32,14 @@ dependencies {
 
     // ANDROID ARCHITECTURE COMPONENT LIBRARIES
     compile "android.arch.lifecycle:runtime:1.0.3"
-    compile "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.lifecycle:common-java8:1.0.0"
+    implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.lifecycle:reactivestreams:1.0.0"
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
-    compile "android.arch.persistence.room:runtime:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.0.0"
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
-    compile "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    implementation "android.arch.paging:runtime:1.0.0-alpha3"
 
     // GOOGLE LIBRARIES
     compile 'com.google.code.gson:gson:2.8.2'
@@ -57,5 +60,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    testCompile "android.arch.persistence.room:testing:1.0.0"
+    testImplementation "android.arch.persistence.room:testing:1.0.0"
+    testImplementation "android.arch.core:core-testing:1.0.0"
 }
