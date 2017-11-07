@@ -23,6 +23,14 @@ public class MainViewModel extends ViewModel {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // DATA VARIABLES:
+    private boolean mIsCorrect = false;
+    private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
+    private Pokemon mSelectedPokemon;
+
+    // FRAGMENT VARIABLES:
+    private String mFragmentTag;
+
     // LIVE DATA VARIABLES:
     private MutableLiveData<List<Pokemon>> mPokemonListData = new MutableLiveData<>();;
 
@@ -39,32 +47,34 @@ public class MainViewModel extends ViewModel {
 
     /** GET METHODS ____________________________________________________________________________ **/
 
-    public boolean getProgressBarVisible() {
-        switch (progressBarVisibility.get()) {
-            case View.VISIBLE:
-                return true;
-            case View.GONE:
-                return false;
-            default:
-                return false;
-        }
+    int getCorrectPosition() {
+        return mCorrectPosition;
     }
 
-    public boolean getErrorTextVisible() {
-        switch(errorTextVisibility.get()) {
-            case View.VISIBLE:
-                return true;
-            case View.GONE:
-                return false;
-            default:
-                return false;
-        }
+    String getFragmentTag() {
+        return mFragmentTag;
+    }
+
+    Pokemon getSelectedPokemon() {
+        return mSelectedPokemon;
     }
 
     /** SET METHODS ____________________________________________________________________________ **/
 
-    public void setPokemonList(List<Pokemon> list) {
-        mPokemonListData.setValue(list);
+    void setCorrectPosition(int correctPosition) {
+        this.mCorrectPosition = correctPosition;
+    }
+
+    void setFragmentTag(String tag) {
+        this.mFragmentTag = tag;
+    }
+
+    void setIsCorrect(boolean isCorrect) {
+        this.mIsCorrect = isCorrect;
+    }
+
+    void setSelectedPokemon(Pokemon selectedPokemon) {
+        this.mSelectedPokemon = selectedPokemon;
     }
 
     /** OBSERVABLE METHODS _____________________________________________________________________ **/
@@ -87,13 +97,13 @@ public class MainViewModel extends ViewModel {
 
     /** LIVE DATA METHODS ______________________________________________________________________ **/
 
-    public LiveData<List<Pokemon>> getPokemonListData() {
+    LiveData<List<Pokemon>> getPokemonListData() {
         return mPokemonListData;
     }
 
     /** DATA METHODS ___________________________________________________________________________ **/
 
-    public void loadData(Context context) {
+    void loadData(Context context) {
         JsonAsyncTask task = new JsonAsyncTask(context);
         task.execute(PokemonConstants.POKEMON_ASSET_NAME);
     }

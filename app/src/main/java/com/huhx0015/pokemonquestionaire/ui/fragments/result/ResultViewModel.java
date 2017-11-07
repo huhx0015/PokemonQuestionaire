@@ -12,6 +12,9 @@ public class ResultViewModel extends ViewModel {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
+    // DATA VARIABLES:
+    private boolean mIsCorrect = false;
+
     // LISTENER VARIABLES:
     private ResultViewModelListener mListener;
 
@@ -26,9 +29,19 @@ public class ResultViewModel extends ViewModel {
         }
     }
 
+    /** GET METHODS ____________________________________________________________________________ **/
+
+    boolean isCorrect() {
+        return mIsCorrect;
+    }
+
     /** SET METHODS ____________________________________________________________________________ **/
 
-    public void setResultText(String text) {
+    void setIsCorrect(boolean isCorrect) {
+        this.mIsCorrect = isCorrect;
+    }
+
+    void setResultText(String text) {
         resultText.set(text);
     }
 

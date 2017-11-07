@@ -1,12 +1,11 @@
 package com.huhx0015.pokemonquestionaire.ui.activities.main;
 
 import android.arch.lifecycle.LifecycleRegistry;
-import android.arch.lifecycle.LifecycleRegistryOwner;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -23,43 +22,26 @@ import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.utils.SnackbarUtils;
 import com.huhx0015.pokemonquestionaire.ui.fragments.base.BaseFragment;
 import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
-import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.ui.fragments.question.QuestionFragment;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.ui.fragments.result.ResultFragment;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LifecycleRegistryOwner, MainActivityListener {
+public class MainActivity extends AppCompatActivity implements MainActivityListener {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
-
-    // DATA VARIABLES:
-    private boolean mIsCorrect = false;
-    private int mCorrectPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
-    private Pokemon mSelectedPokemon;
 
     // DATABINDING VARIABLES:
     private ActivityMainBinding mActivityMainBinding;
     private ContentMainBinding mContentMainBinding;
     private MainViewModel mViewModel;
 
-    // FRAGMENT VARIABLES:
-    private String mFragmentTag;
-
     // LIFECYCLE VARIABLES:
     private final LifecycleRegistry mRegistry = new LifecycleRegistry(this);
 
     // LOGGING VARIABLES:
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
-    // INSTANCE VARIABLES:
-    private static final String INSTANCE_FRAGMENT_TAG = LOG_TAG + "_FRAGMENT_TAG";
-    private static final String INSTANCE_SELECTED_POKEMON = LOG_TAG + "_SELECTED_POKEMON";
-    private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_CORRECT_POSITION";
-    private static final String INSTANCE_POKEMON_LIST = LOG_TAG + "_POKEMON_LIST";
-    private static final String INSTANCE_IS_CORRECT = LOG_TAG + "_IS_CORRECT";
 
     /** ACTIVITY LIFECYCLE METHODS _____________________________________________________________ **/
 
@@ -69,29 +51,17 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
         initView();
 
-        if (savedInstanceState != null) {
-            mSelectedPokemon = savedInstanceState.getParcelable(INSTANCE_SELECTED_POKEMON);
-            mFragmentTag = savedInstanceState.getString(INSTANCE_FRAGMENT_TAG);
-            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION);
-            mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);
+        if (savedInstanceState != null && mViewModel.getSelectedPokemon() != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(mViewModel.getFragmentTag());
 
-            List<Pokemon> pokemonList = savedInstanceState.getParcelableArrayList(INSTANCE_POKEMON_LIST);
-            if (pokemonList != null && pokemonList.size() > 0) {
-                mViewModel.setPokemonList(pokemonList);
+            if (fragment != null) {
+                Log.d(LOG_TAG, "onCreate(): Loading previous fragment: " + mViewModel.getFragmentTag());
 
-                if (mSelectedPokemon != null) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    BaseFragment fragment = (BaseFragment) fragmentManager.findFragmentByTag(mFragmentTag);
-
-                    if (fragment != null) {
-                        Log.d(LOG_TAG, "onCreate(): Loading previous fragment: " + mFragmentTag);
-
-                        fragment.setListener(this);
-                        loadFragment(fragment, mFragmentTag);
-                    }
-                    return;
-                }
+                fragment.setListener(this);
+                loadFragment(fragment, mViewModel.getFragmentTag());
             }
+            return;
         }
 
         subscribe(); // Subscribes an observer on the mPokemonListData object in mViewModel.
@@ -113,23 +83,6 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         super.onBackPressed();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        if (mSelectedPokemon != null) {
-            outState.putParcelable(INSTANCE_SELECTED_POKEMON, mSelectedPokemon);
-        }
-
-        if (mViewModel.getPokemonListData() != null && mViewModel.getPokemonListData().getValue() != null) {
-            outState.putParcelableArrayList(INSTANCE_POKEMON_LIST, new ArrayList<Parcelable>(mViewModel.getPokemonListData().getValue()));
-        }
-
-        outState.putString(INSTANCE_FRAGMENT_TAG, mFragmentTag);
-        outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
-        outState.putBoolean(INSTANCE_IS_CORRECT, mIsCorrect);
-    }
-
     /** LIFECYCLE OWNER METHODS ________________________________________________________________ **/
 
     @NonNull
@@ -142,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
 
     @Override
     public void onAnswerSelected(boolean isCorrect) {
-        mIsCorrect = isCorrect;
+        mViewModel.setIsCorrect(isCorrect);
         loadFragment(ResultFragment.newInstance(isCorrect, this), ResultFragment.class.getSimpleName());
         startTimer(false);
     }
@@ -150,11 +103,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     @Override
     public void onTryAgainSelected(boolean isNewQuestion) {
         if (isNewQuestion) {
-            mSelectedPokemon = QuestionUtils.getRandomQuestion(mViewModel.getPokemonListData().getValue());
-            mCorrectPosition = QuestionUtils.getRandomPosition();
+            mViewModel.setSelectedPokemon(QuestionUtils.getRandomQuestion(mViewModel.getPokemonListData().getValue()));
+            mViewModel.setCorrectPosition(QuestionUtils.getRandomPosition());
         }
 
-        loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition, this),
+        loadFragment(QuestionFragment.newInstance(mViewModel.getSelectedPokemon(), mViewModel.getCorrectPosition(), this),
                 QuestionFragment.class.getSimpleName());
         startTimer(true);
     }
@@ -170,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
         mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mContentMainBinding = mActivityMainBinding.contentMain;
 
-        mViewModel = new MainViewModel();
+        mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         mActivityMainBinding.setViewModel(mViewModel);
         mContentMainBinding.setViewModel(mViewModel);
     }
@@ -182,11 +135,11 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
     /** FRAGMENT METHODS _______________________________________________________________________ **/
 
     private void loadFragment(Fragment fragment, String tag) {
-        this.mFragmentTag = tag;
+        mViewModel.setFragmentTag(tag);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(mContentMainBinding.mainFragmentContainer.getId(), fragment, mFragmentTag);
+        fragmentTransaction.replace(mContentMainBinding.mainFragmentContainer.getId(), fragment, mViewModel.getFragmentTag());
         fragmentTransaction.commitAllowingStateLoss();
     }
 
@@ -211,10 +164,10 @@ public class MainActivity extends AppCompatActivity implements LifecycleRegistry
                 Log.d(LOG_TAG, "subscribe(): mPokemonList data has changed.");
 
                 if (pokemon != null) {
-                    mSelectedPokemon = QuestionUtils.getRandomQuestion(pokemon);
-                    mCorrectPosition = QuestionUtils.getRandomPosition();
+                    mViewModel.setSelectedPokemon(QuestionUtils.getRandomQuestion(pokemon));
+                    mViewModel.setCorrectPosition(QuestionUtils.getRandomPosition());
 
-                    loadFragment(QuestionFragment.newInstance(mSelectedPokemon, mCorrectPosition,
+                    loadFragment(QuestionFragment.newInstance(mViewModel.getSelectedPokemon(), mViewModel.getCorrectPosition(),
                             MainActivity.this), QuestionFragment.class.getSimpleName());
                     startTimer(true);
 

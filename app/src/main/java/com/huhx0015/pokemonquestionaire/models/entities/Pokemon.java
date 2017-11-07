@@ -16,38 +16,38 @@ public class Pokemon implements Parcelable {
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     @PrimaryKey(autoGenerate = true)
-    private int mId;
+    private int id;
 
-    private String mItem;
-    private List<String> mUrlList;
+    private String item;
+    private List<String> urlList;
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
     public Pokemon(int id, String item, List<String> urlList) {
-        this.mId = id;
-        this.mItem = item;
-        this.mUrlList = urlList;
+        this.id = id;
+        this.item = item;
+        this.urlList = urlList;
     }
 
     /** GET METHODS ____________________________________________________________________________ **/
 
     public int getId() {
-        return mId;
+        return id;
     }
 
     public String getItem() {
-        return mItem;
+        return item;
     }
 
     public List<String> getUrlList() {
-        return mUrlList;
+        return urlList;
     }
 
     /** PARCELABLE METHODS _____________________________________________________________________ **/
 
     protected Pokemon(Parcel in) {
-        mItem = in.readString();
-        mUrlList = in.createStringArrayList();
+        item = in.readString();
+        urlList = in.createStringArrayList();
     }
 
     public static final Creator<Pokemon> CREATOR = new Creator<Pokemon>() {
@@ -69,7 +69,7 @@ public class Pokemon implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mItem);
-        dest.writeStringList(mUrlList);
+        dest.writeString(item);
+        dest.writeStringList(urlList);
     }
 }

@@ -1,13 +1,13 @@
 package com.huhx0015.pokemonquestionaire.ui.fragments.base;
 
-import android.arch.lifecycle.LifecycleFragment;
+import android.support.v4.app.Fragment;
 import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
 
 /**
  * Created by Michael Yoon Huh on 6/18/2017.
  */
 
-public class BaseFragment extends LifecycleFragment {
+public class BaseFragment extends Fragment {
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 

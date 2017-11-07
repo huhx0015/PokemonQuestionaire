@@ -1,5 +1,6 @@
 package com.huhx0015.pokemonquestionaire.ui.fragments.result;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,7 +13,6 @@ import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentResultBinding;
 import com.huhx0015.pokemonquestionaire.ui.fragments.base.BaseFragment;
 import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
-
 import nl.dionsegijn.konfetti.models.Shape;
 
 /**
@@ -24,7 +24,7 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
     // DATA VARIABLES:
-    private boolean mIsCorrect = false;
+    //private boolean mIsCorrect = false;
 
     // DATABINDING VARIABLES:
     private FragmentResultBinding mBinding;
@@ -49,23 +49,16 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mIsCorrect = savedInstanceState.getBoolean(INSTANCE_IS_CORRECT);
-        } else if (getArguments() != null) {
-            mIsCorrect = getArguments().getBoolean(INSTANCE_IS_CORRECT, false);
-        }
-
-        Log.d(LOG_TAG, "onCreate(): Answer Result is: " + mIsCorrect);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initView();
+
+        if (getArguments() != null) {
+            mViewModel.setIsCorrect(getArguments().getBoolean(INSTANCE_IS_CORRECT, false));
+            Log.d(LOG_TAG, "onCreate(): Answer Result is: " + mViewModel.isCorrect());
+        }
+
         return mBinding.getRoot();
     }
 
@@ -73,14 +66,6 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
     public void onDestroyView() {
         super.onDestroyView();
         mBinding.unbind();
-    }
-
-    /** FRAGMENT EXTENSION METHODS _____________________________________________________________ **/
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(INSTANCE_IS_CORRECT, mIsCorrect);
     }
 
     /** VIEW METHODS ___________________________________________________________________________ **/
@@ -93,13 +78,13 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_result, null, false);
-        mViewModel = new ResultViewModel();
+        mViewModel = ViewModelProviders.of(getActivity()).get(ResultViewModel.class);
         mViewModel.setListener(this);
         mBinding.setViewModel(mViewModel);
     }
 
     private void initGraphics() {
-        if (mIsCorrect) {
+        if (mViewModel.isCorrect()) {
             mBinding.fragmentKonfettiView.build()
                     .addColors(Color.YELLOW, Color.GREEN, Color.MAGENTA)
                     .setDirection(0.0, 359.0)
@@ -113,13 +98,13 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
     }
 
     private void initText() {
-        mViewModel.setResultText(mIsCorrect ? getString(R.string.result_correct) : getString(R.string.result_wrong));
+        mViewModel.setResultText(mViewModel.isCorrect() ? getString(R.string.result_correct) : getString(R.string.result_wrong));
     }
 
     /** LISTENER METHODS _______________________________________________________________________ **/
 
     @Override
     public void onTryAgainButtonClicked() {
-        mListener.onTryAgainSelected(mIsCorrect);
+        mListener.onTryAgainSelected(mViewModel.isCorrect());
     }
 }

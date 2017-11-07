@@ -1,5 +1,6 @@
 package com.huhx0015.pokemonquestionaire.ui.fragments.question;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,12 +33,6 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     // CONSTANT VARIABLES:
     private static final int CORRECT_ANSWER_IMAGE_POSITION = 0;
 
-    // DATA VARIABLES:
-    private boolean mIsTimeUp = false;
-    private int mCorrectPosition;
-    private int mSelectedPosition = PokemonConstants.STATE_CORRECT_POSITION_UNSET;
-    private Pokemon mPokemon;
-
     // DATABINDING VARIABLES:
     private FragmentQuestionBinding mBinding;
     private QuestionViewModel mViewModel;
@@ -48,8 +43,6 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     // INSTANCE VARIABLES:
     private static final String INSTANCE_POKEMON = LOG_TAG + "_INSTANCE_POKEMON";
     private static final String INSTANCE_CORRECT_POSITION = LOG_TAG + "_INSTANCE_CORRECT_POSITION";
-    private static final String INSTANCE_SELECTED_POSITION = LOG_TAG + "_INSTANCE_SELECTED_POSITION";
-    private static final String INSTANCE_TIME_UP = LOG_TAG + "_INSTANCE_TIME_UP";
 
     /** CONSTRUCTOR METHODS ____________________________________________________________________ **/
 
@@ -66,27 +59,22 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
 
     /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mPokemon = savedInstanceState.getParcelable(INSTANCE_POKEMON);
-            mCorrectPosition = savedInstanceState.getInt(INSTANCE_CORRECT_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
-            mSelectedPosition = savedInstanceState.getInt(INSTANCE_SELECTED_POSITION, PokemonConstants.STATE_CORRECT_POSITION_UNSET);
-            mIsTimeUp = savedInstanceState.getBoolean(INSTANCE_TIME_UP);
-        } else if (getArguments() != null) {
-            mPokemon = getArguments().getParcelable(INSTANCE_POKEMON);
-            mCorrectPosition = getArguments().getInt(INSTANCE_CORRECT_POSITION);
-        }
-
-        Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mCorrectPosition);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initView();
+        initBinding();
+
+        if (getArguments() != null) {
+            Pokemon pokemon = getArguments().getParcelable(INSTANCE_POKEMON);
+            mViewModel.setPokemon(pokemon);
+            mViewModel.setCorrectPosition(getArguments().getInt(INSTANCE_CORRECT_POSITION));
+
+            Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mViewModel.getCorrectPosition());
+        }
+
+        initText();
+        initImages();
+
         return mBinding.getRoot();
     }
 
@@ -114,37 +102,22 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
         mBinding.unbind();
     }
 
-    /** FRAGMENT EXTENSION METHODS _____________________________________________________________ **/
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(INSTANCE_POKEMON, mPokemon);
-        outState.putInt(INSTANCE_CORRECT_POSITION, mCorrectPosition);
-        outState.putInt(INSTANCE_SELECTED_POSITION, mSelectedPosition);
-        outState.putBoolean(INSTANCE_TIME_UP, mIsTimeUp);
-    }
-
     /** VIEW METHODS ___________________________________________________________________________ **/
-
-    private void initView() {
-        initBinding();
-        initText();
-        initImages();
-    }
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
-        mViewModel = new QuestionViewModel(getContext());
+        mViewModel = ViewModelProviders.of(getActivity()).get(QuestionViewModel.class);
+        mViewModel.setSubmitButtonVisible(false);
+        mViewModel.setSubmitButtonText(getString(R.string.question_submit));
         mViewModel.setListener(this);
         mBinding.setViewModel(mViewModel);
     }
 
     private void initText() {
-        mViewModel.setQuestionText(mPokemon.getItem());
-        mViewModel.setInstructionsText(String.format(getString(R.string.questions_instructions), mPokemon.getItem()));
+        mViewModel.setQuestionText(mViewModel.getPokemon().getItem());
+        mViewModel.setInstructionsText(String.format(getString(R.string.questions_instructions), mViewModel.getPokemon().getItem()));
 
-        if (mIsTimeUp) {
+        if (mViewModel.isTimeUp()) {
             mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
         }
     }
@@ -152,16 +125,17 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     private void initImages() {
 
         // Sets the correct answer image.
-        mViewModel.setQuestionImage(mCorrectPosition, mPokemon.getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION));
+        mViewModel.setQuestionImage(mViewModel.getCorrectPosition(),
+                mViewModel.getPokemon().getUrlList().get(CORRECT_ANSWER_IMAGE_POSITION));
 
         // Sets the rest of the images.
         int imageCount = 1;
         int position = 0;
-        int numberOfImages = mPokemon.getUrlList().size();
+        int numberOfImages = mViewModel.getPokemon().getUrlList().size();
         while (imageCount < numberOfImages) {
-            String url = mPokemon.getUrlList().get(imageCount);
+            String url = mViewModel.getPokemon().getUrlList().get(imageCount);
 
-            if (position != mCorrectPosition) {
+            if (position != mViewModel.getCorrectPosition()) {
                 mViewModel.setQuestionImage(position, url);
                 imageCount++;
             }
@@ -172,7 +146,7 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
     /** QUESTION METHODS _______________________________________________________________________ **/
 
     private void checkAnswer(int position) {
-        if (position == mCorrectPosition) {
+        if (position == mViewModel.getCorrectPosition()) {
             mListener.onAnswerSelected(true);
         } else {
             mListener.onAnswerSelected(false);
@@ -185,17 +159,17 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
         boolean isTimeUp = PokemonPreferences.getTimeUp(getContext());
         if (isTimeUp) {
             Log.d(LOG_TAG, "checkQuizState(): Time up was set in preferences.");
-            mIsTimeUp = true;
+            mViewModel.setIsTimeUp(true);
             PokemonPreferences.clearPreferences(getContext());
         }
 
-        Log.d(LOG_TAG, "checkQuizState(): mIsTimeUp: " + mIsTimeUp);
+        Log.d(LOG_TAG, "checkQuizState(): mIsTimeUp: " + mViewModel.isTimeUp());
 
-        if (mIsTimeUp) {
+        if (mViewModel.isTimeUp()) {
             mViewModel.setTimeRemainingText(getString(R.string.questions_time_run_out));
             mViewModel.setSubmitButtonVisible(true);
             mViewModel.setSubmitButtonText(getString(R.string.result_try_again));
-        } else if (mSelectedPosition != PokemonConstants.STATE_CORRECT_POSITION_UNSET){
+        } else if (mViewModel.getSelectedPosition() != PokemonConstants.STATE_CORRECT_POSITION_UNSET){
             mViewModel.setSubmitButtonVisible(true);
             mViewModel.setSubmitButtonText(getString(R.string.question_submit));
         }
@@ -215,8 +189,8 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
                 }
             }
 
-            mIsTimeUp = intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false);
-            Log.d(LOG_TAG, "mTimerReceiver: mIsTimeUp: " + mIsTimeUp);
+            mViewModel.setIsTimeUp(intent.getBooleanExtra(PokemonConstants.EVENT_TIMER_FINISHED, false));
+            Log.d(LOG_TAG, "mTimerReceiver: mIsTimeUp: " + mViewModel.isTimeUp());
 
             checkQuizState();
         }
@@ -226,8 +200,8 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
 
     @Override
     public void onSubmitButtonClicked() {
-        if (!mIsTimeUp) {
-            checkAnswer(mSelectedPosition);
+        if (!mViewModel.isTimeUp()) {
+            checkAnswer(mViewModel.getSelectedPosition());
         } else {
             mListener.onTryAgainSelected(true);
         }
@@ -235,7 +209,7 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
 
     @Override
     public void onQuestionImageClicked(int position) {
-        mSelectedPosition = position;
+        mViewModel.setSelectedPosition(position);
         mViewModel.setSubmitButtonVisible(true);
     }
 }
