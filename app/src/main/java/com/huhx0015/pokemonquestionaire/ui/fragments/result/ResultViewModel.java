@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.viewmodels.fragments;
+package com.huhx0015.pokemonquestionaire.ui.fragments.result;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;

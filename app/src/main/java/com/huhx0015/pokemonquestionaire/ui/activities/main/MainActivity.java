@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.view.activities;
+package com.huhx0015.pokemonquestionaire.ui.activities.main;
 
 import android.arch.lifecycle.LifecycleRegistry;
 import android.arch.lifecycle.LifecycleRegistryOwner;
@@ -20,14 +20,14 @@ import com.huhx0015.pokemonquestionaire.databinding.ContentMainBinding;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
 import com.huhx0015.pokemonquestionaire.services.TimerService;
 import com.huhx0015.pokemonquestionaire.utils.SnackbarUtils;
-import com.huhx0015.pokemonquestionaire.view.fragments.BaseFragment;
-import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.ui.fragments.base.BaseFragment;
+import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
-import com.huhx0015.pokemonquestionaire.view.fragments.QuestionFragment;
+import com.huhx0015.pokemonquestionaire.ui.fragments.question.QuestionFragment;
 import com.huhx0015.pokemonquestionaire.R;
-import com.huhx0015.pokemonquestionaire.view.fragments.ResultFragment;
+import com.huhx0015.pokemonquestionaire.ui.fragments.result.ResultFragment;
 import com.huhx0015.pokemonquestionaire.utils.QuestionUtils;
-import com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
 

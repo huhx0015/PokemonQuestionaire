@@ -7,13 +7,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel"/>
+            type="com.huhx0015.pokemonquestionaire.ui.activities.main.MainViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.activities.MainActivity">
+        tools:context=".ui.activities.main.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"

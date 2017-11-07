@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel"/>
+            type="com.huhx0015.pokemonquestionaire.ui.fragments.question.QuestionViewModel"/>
     </data>
 
     <RelativeLayout

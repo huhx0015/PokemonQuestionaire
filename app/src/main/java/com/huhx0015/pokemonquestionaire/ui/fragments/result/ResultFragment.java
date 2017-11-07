@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.view.fragments;
+package com.huhx0015.pokemonquestionaire.ui.fragments.result;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -10,8 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentResultBinding;
-import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
-import com.huhx0015.pokemonquestionaire.viewmodels.fragments.ResultViewModel;
+import com.huhx0015.pokemonquestionaire.ui.fragments.base.BaseFragment;
+import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
+
 import nl.dionsegijn.konfetti.models.Shape;
 
 /**

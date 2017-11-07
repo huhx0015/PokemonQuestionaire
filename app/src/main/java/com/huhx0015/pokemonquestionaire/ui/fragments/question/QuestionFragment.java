@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.view.fragments;
+package com.huhx0015.pokemonquestionaire.ui.fragments.question;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,9 +17,9 @@ import com.huhx0015.pokemonquestionaire.R;
 import com.huhx0015.pokemonquestionaire.constants.PokemonConstants;
 import com.huhx0015.pokemonquestionaire.data.PokemonPreferences;
 import com.huhx0015.pokemonquestionaire.databinding.FragmentQuestionBinding;
-import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.ui.fragments.base.BaseFragment;
+import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
 import com.huhx0015.pokemonquestionaire.models.entities.Pokemon;
-import com.huhx0015.pokemonquestionaire.viewmodels.fragments.QuestionViewModel;
 
 /**
  * Created by Michael Yoon Huh on 5/31/2017.

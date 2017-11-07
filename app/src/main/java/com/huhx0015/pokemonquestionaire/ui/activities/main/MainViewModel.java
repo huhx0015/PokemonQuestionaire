@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.viewmodels.activities;
+package com.huhx0015.pokemonquestionaire.ui.activities.main;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

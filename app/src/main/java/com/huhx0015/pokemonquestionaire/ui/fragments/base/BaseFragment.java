@@ -1,7 +1,7 @@
-package com.huhx0015.pokemonquestionaire.view.fragments;
+package com.huhx0015.pokemonquestionaire.ui.fragments.base;
 
 import android.arch.lifecycle.LifecycleFragment;
-import com.huhx0015.pokemonquestionaire.view.interfaces.MainActivityListener;
+import com.huhx0015.pokemonquestionaire.ui.interfaces.MainActivityListener;
 
 /**
  * Created by Michael Yoon Huh on 6/18/2017.

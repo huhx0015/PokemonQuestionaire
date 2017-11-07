@@ -1,4 +1,4 @@
-package com.huhx0015.pokemonquestionaire.viewmodels.fragments;
+package com.huhx0015.pokemonquestionaire.ui.fragments.question;
 
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;

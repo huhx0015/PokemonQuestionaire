@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.huhx0015.pokemonquestionaire.viewmodels.activities.MainViewModel"/>
+            type="com.huhx0015.pokemonquestionaire.ui.activities.main.MainViewModel"/>
     </data>
 
     <FrameLayout
@@ -16,7 +16,7 @@
         android:padding="@dimen/fragment_padding"
         android:animateLayoutChanges="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".view.activities.MainActivity"
+        tools:context=".ui.activities.main.MainActivity"
         tools:showIn="@layout/activity_main">
 
         <RelativeLayout
