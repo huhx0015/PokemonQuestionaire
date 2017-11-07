@@ -23,9 +23,6 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     /** CLASS VARIABLES ________________________________________________________________________ **/
 
-    // DATA VARIABLES:
-    //private boolean mIsCorrect = false;
-
     // DATABINDING VARIABLES:
     private FragmentResultBinding mBinding;
     private ResultViewModel mViewModel;
@@ -49,16 +46,21 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initView();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initViewModel();
 
         if (getArguments() != null) {
             mViewModel.setIsCorrect(getArguments().getBoolean(INSTANCE_IS_CORRECT, false));
             Log.d(LOG_TAG, "onCreate(): Answer Result is: " + mViewModel.isCorrect());
         }
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initView();
         return mBinding.getRoot();
     }
 
@@ -70,6 +72,11 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     /** VIEW METHODS ___________________________________________________________________________ **/
 
+    private void initViewModel() {
+        mViewModel = ViewModelProviders.of(getActivity()).get(ResultViewModel.class);
+        mViewModel.setListener(this);
+    }
+
     private void initView() {
         initBinding();
         initGraphics();
@@ -78,8 +85,6 @@ public class ResultFragment extends BaseFragment implements ResultViewModel.Resu
 
     private void initBinding() {
         mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_result, null, false);
-        mViewModel = ViewModelProviders.of(getActivity()).get(ResultViewModel.class);
-        mViewModel.setListener(this);
         mBinding.setViewModel(mViewModel);
     }
 

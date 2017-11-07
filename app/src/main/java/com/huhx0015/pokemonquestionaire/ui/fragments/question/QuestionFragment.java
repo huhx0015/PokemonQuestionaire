@@ -59,22 +59,26 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
 
     /** FRAGMENT LIFECYCLE METHODS _____________________________________________________________ **/
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initBinding();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initViewModel();
 
         if (getArguments() != null) {
             Pokemon pokemon = getArguments().getParcelable(INSTANCE_POKEMON);
             mViewModel.setPokemon(pokemon);
             mViewModel.setCorrectPosition(getArguments().getInt(INSTANCE_CORRECT_POSITION));
+            mViewModel.setSelectedPosition(PokemonConstants.STATE_CORRECT_POSITION_UNSET);
+            mViewModel.setSubmitButtonVisible(false);
 
             Log.d(LOG_TAG, "onCreate(): Correct image position at: " + mViewModel.getCorrectPosition());
         }
+    }
 
-        initText();
-        initImages();
-
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        initView();
         return mBinding.getRoot();
     }
 
@@ -104,12 +108,21 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
 
     /** VIEW METHODS ___________________________________________________________________________ **/
 
-    private void initBinding() {
-        mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
+    private void initViewModel() {
         mViewModel = ViewModelProviders.of(getActivity()).get(QuestionViewModel.class);
         mViewModel.setSubmitButtonVisible(false);
         mViewModel.setSubmitButtonText(getString(R.string.question_submit));
         mViewModel.setListener(this);
+    }
+
+    private void initView() {
+        initBinding();
+        initText();
+        initImages();
+    }
+
+    private void initBinding() {
+        mBinding = DataBindingUtil.inflate(getActivity().getLayoutInflater(), R.layout.fragment_question, null, false);
         mBinding.setViewModel(mViewModel);
     }
 
@@ -203,6 +216,8 @@ public class QuestionFragment extends BaseFragment implements QuestionViewModel.
         if (!mViewModel.isTimeUp()) {
             checkAnswer(mViewModel.getSelectedPosition());
         } else {
+            mViewModel.setSelectedPosition(PokemonConstants.STATE_CORRECT_POSITION_UNSET);
+            mViewModel.setSubmitButtonVisible(false);
             mListener.onTryAgainSelected(true);
         }
     }

@@ -76,60 +76,98 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/question_margin"
-                    android:layout_margin="2dp"
-                    card_view:cardCornerRadius="2dp"
-                    card_view:cardElevation="2dp">
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/fragment_padding">
 
-                    <LinearLayout
+                    <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/fragment_padding">
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="2dp">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/fragment_question_image_1"
                             android:layout_width="@dimen/question_item_dimen"
                             android:layout_height="@dimen/question_item_dimen"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/question_item_side_margin"
                             android:layout_marginStart="@dimen/question_item_side_margin"
                             android:onClick="@{viewModel.onClickFirstQuestionImage}"
-                            app:imageUrl="@{viewModel.firstQuestionImage}"/>
+                            app:imageUrl="@{viewModel.firstQuestionImage}" />
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="2dp">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/fragment_question_image_2"
                             android:layout_width="@dimen/question_item_dimen"
                             android:layout_height="@dimen/question_item_dimen"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/question_item_side_margin"
                             android:layout_marginStart="@dimen/question_item_side_margin"
                             android:onClick="@{viewModel.onClickSecondQuestionImage}"
-                            app:imageUrl="@{viewModel.secondQuestionImage}"/>
+                            app:imageUrl="@{viewModel.secondQuestionImage}" />
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="2dp">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/fragment_question_image_3"
                             android:layout_width="@dimen/question_item_dimen"
                             android:layout_height="@dimen/question_item_dimen"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/question_item_side_margin"
                             android:layout_marginStart="@dimen/question_item_side_margin"
                             android:onClick="@{viewModel.onClickThirdQuestionImage}"
-                            app:imageUrl="@{viewModel.thirdQuestionImage}"/>
+                            app:imageUrl="@{viewModel.thirdQuestionImage}" />
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:layout_weight="1"
+                        card_view:cardCornerRadius="2dp"
+                        card_view:cardElevation="2dp">
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/fragment_question_image_4"
                             android:layout_width="@dimen/question_item_dimen"
                             android:layout_height="@dimen/question_item_dimen"
+                            android:layout_gravity="center"
                             android:layout_marginEnd="@dimen/question_item_side_margin"
                             android:layout_marginStart="@dimen/question_item_side_margin"
                             android:onClick="@{viewModel.onClickFourthQuestionImage}"
-                            app:imageUrl="@{viewModel.fourthQuestionImage}"/>
+                            app:imageUrl="@{viewModel.fourthQuestionImage}" />
 
-                    </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
-                </android.support.v7.widget.CardView>
+                </LinearLayout>
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
