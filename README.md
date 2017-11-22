@@ -4,7 +4,7 @@ Pokémon Questionaire
 DEVELOPER: huhx0015
 
 ### POKEMON QUESTIONAIRE
-![pokemonquestionaire_preview](https://user-images.githubusercontent.com/1645482/27267425-172ed23e-545d-11e7-9861-030fcaf1bd23.gif)
+![pokemonquestionaire_preview](https://user-images.githubusercontent.com/1645482/33109482-966d8478-cef6-11e7-9d05-3192f2acea89.gif)
 
 ## Description
 

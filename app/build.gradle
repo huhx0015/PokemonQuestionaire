@@ -25,10 +25,10 @@ android {
 dependencies {
 
     // ANDROID SUPPORT LIBRARIES
-    compile 'com.android.support:appcompat-v7:27.0.0'
-    compile 'com.android.support:cardview-v7:27.0.0'
-    compile 'com.android.support:design:27.0.0'
-    compile 'com.android.support:support-v4:27.0.0'
+    compile 'com.android.support:appcompat-v7:27.0.1'
+    compile 'com.android.support:cardview-v7:27.0.1'
+    compile 'com.android.support:design:27.0.1'
+    compile 'com.android.support:support-v4:27.0.1'
 
     // ANDROID ARCHITECTURE COMPONENT LIBRARIES
     compile "android.arch.lifecycle:runtime:1.0.3"
